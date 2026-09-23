@@ -8,7 +8,7 @@ specificity: 0.37
 lr_positive: null
 lr_negative: null
 source: "Hegedus et al. 2012, Br J Sports Med (metaanalys, SLAP)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=obrien+active+compression+test"
 ---
 
 ## Så utförs testet

@@ -8,7 +8,7 @@ specificity: 0.94
 lr_positive: null
 lr_negative: null
 source: "Jain et al. 2017, Am J Phys Med Rehabil (ROW-kohort)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=lift+off+sign"
 ---
 
 ## Så utförs testet

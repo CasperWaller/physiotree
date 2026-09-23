@@ -8,7 +8,7 @@ specificity: 0.89
 lr_positive: null
 lr_negative: null
 source: "Morey et al. 2016, Musculoskelet Surg"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=load+and+shift+test"
 ---
 
 ## Så utförs testet

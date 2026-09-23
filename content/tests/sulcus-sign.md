@@ -8,7 +8,7 @@ specificity: null
 lr_positive: null
 lr_negative: null
 source: ""
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=sulcus+sign"
 ---
 
 ## Så utförs testet

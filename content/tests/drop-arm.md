@@ -8,7 +8,7 @@ specificity: 0.77
 lr_positive: null
 lr_negative: null
 source: "Miller et al. 2008, Arch Phys Med Rehabil"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=drop+arm+sign"
 ---
 
 ## Så utförs testet

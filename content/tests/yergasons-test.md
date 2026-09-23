@@ -8,7 +8,7 @@ specificity: 0.88
 lr_positive: null
 lr_negative: null
 source: "Micheroli et al. 2015, J Ultrason (bicepspatologi)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=yergasons+test"
 ---
 
 ## Så utförs testet

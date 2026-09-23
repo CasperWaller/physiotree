@@ -59,7 +59,7 @@ function TestView({ test }: { test: Test }) {
       {test.video && (
         <p>
           <a href={test.video} target="_blank" rel="noreferrer" className="side-panel__video">
-            ▶ Visa demonstrationsvideo
+            ▶ Se demonstration på Physiotutors (YouTube)
           </a>
         </p>
       )}

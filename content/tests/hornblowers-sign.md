@@ -8,7 +8,7 @@ specificity: 0.96
 lr_positive: 4.25
 lr_negative: null
 source: "Jain et al. 2017, Am J Phys Med Rehabil (ROW-kohort)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=hornblowers+sign"
 ---
 
 ## Så utförs testet

@@ -8,7 +8,7 @@ specificity: 0.94
 lr_positive: 7.2
 lr_negative: null
 source: "Miller et al. 2008, Arch Phys Med Rehabil"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=external+rotation+lag+sign"
 ---
 
 ## Så utförs testet

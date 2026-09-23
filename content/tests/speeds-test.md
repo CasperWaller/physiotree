@@ -8,7 +8,7 @@ specificity: 0.78
 lr_positive: null
 lr_negative: null
 source: "Hegedus et al. 2012, Br J Sports Med (metaanalys)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=speeds+test+biceps"
 ---
 
 ## Så utförs testet

@@ -8,7 +8,7 @@ specificity: 0.76
 lr_positive: null
 lr_negative: null
 source: "Hegedus et al. 2012, Br J Sports Med (metaanalys)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=painful+arc+sign"
 ---
 
 ## Så utförs testet

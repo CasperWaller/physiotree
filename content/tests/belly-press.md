@@ -8,7 +8,7 @@ specificity: 0.87
 lr_positive: null
 lr_negative: null
 source: "Jain et al. 2017, Am J Phys Med Rehabil (ROW-kohort)"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=belly+press+test"
 ---
 
 ## Så utförs testet

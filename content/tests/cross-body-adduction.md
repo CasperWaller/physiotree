@@ -8,7 +8,7 @@ specificity: 0.79
 lr_positive: null
 lr_negative: null
 source: "Chronopoulos et al. 2004, Am J Sports Med"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=cross+body+adduction+test"
 ---
 
 ## Så utförs testet

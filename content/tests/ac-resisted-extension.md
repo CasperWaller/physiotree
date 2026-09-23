@@ -8,7 +8,7 @@ specificity: 0.85
 lr_positive: null
 lr_negative: null
 source: "Chronopoulos et al. 2004, Am J Sports Med"
-video: ""
+video: "https://www.youtube.com/@Physiotutors/search?query=ac+resisted+extension+test"
 ---
 
 ## Så utförs testet
