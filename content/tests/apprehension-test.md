@@ -3,11 +3,11 @@ id: apprehension-test
 name: Apprehension Test
 region: shoulder
 structure: "Främre glenohumerala kapseln / labrum"
-sensitivity: null
-specificity: null
+sensitivity: 0.66
+specificity: 0.95
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Hegedus et al. 2012, Br J Sports Med (metaanalys)"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Oro/obehag (apprehension) att axeln ska hoppa ur led – inte enbart smärta.
 
 ## Kliniska anteckningar
 Apprehension (ej smärta) är mer specifikt för främre instabilitet.
+
+Kombinerat med relocation-testet: sens 67 %, spec 98 %.

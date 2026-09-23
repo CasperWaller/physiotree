@@ -3,11 +3,11 @@ id: painful-arc
 name: Smärtbåge (Painful Arc)
 region: shoulder
 structure: "Subakromiellt utrymme"
-sensitivity: null
-specificity: null
+sensitivity: 0.53
+specificity: 0.76
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Hegedus et al. 2012, Br J Sports Med (metaanalys)"
 video: ""
 ---
 

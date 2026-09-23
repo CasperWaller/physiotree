@@ -19,3 +19,5 @@ Synlig fördjupning (sulcus) mellan akromion och humerushuvudet.
 
 ## Kliniska anteckningar
 Talar för inferior/multidirektionell instabilitet; jämför med andra sidan.
+
+Ingen etablerad sensitivitet/specificitet; interbedömarreliabilitet måttlig (kappa 0,48; Eshoj et al. 2018).

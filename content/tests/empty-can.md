@@ -3,11 +3,11 @@ id: empty-can
 name: Empty Can-test (Jobe)
 region: shoulder
 structure: "Supraspinatus"
-sensitivity: null
-specificity: null
+sensitivity: 0.74
+specificity: 0.3
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Hegedus et al. 2012, Br J Sports Med (metaanalys)"
 video: ""
 ---
 
@@ -18,4 +18,6 @@ Armen i 90° i scapulaplanet, inåtroterad (tummen nedåt). Terapeuten ger nedå
 Smärta och/eller svaghet mot motstånd.
 
 ## Kliniska anteckningar
-Svaghet är mer specifikt än enbart smärta. Kombinera med andra tester. Fyll i sensitivitet/specificitet med källa.
+Svaghet är mer specifikt än enbart smärta. Kombinera med andra tester.
+
+Låg specificitet – testet aktiverar flera muskler, inte enbart supraspinatus.

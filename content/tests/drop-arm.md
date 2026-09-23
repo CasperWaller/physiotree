@@ -3,11 +3,11 @@ id: drop-arm
 name: Drop Arm-test
 region: shoulder
 structure: "Rotatorkuff (särskilt supraspinatus)"
-sensitivity: null
-specificity: null
+sensitivity: 0.73
+specificity: 0.77
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Miller et al. 2008, Arch Phys Med Rehabil"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Armen faller okontrollerat eller kan inte hållas emot.
 
 ## Kliniska anteckningar
 Talar för större/fullständig rotatorkuffruptur. Högre specificitet än sensitivitet.
+
+Sgroi et al. 2019 rapporterar lägre sensitivitet (43 %) för isolerad infraspinatusruptur.

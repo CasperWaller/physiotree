@@ -3,11 +3,11 @@ id: load-and-shift
 name: Load and Shift Test
 region: shoulder
 structure: "Glenohumerala kapseln / labrum"
-sensitivity: null
-specificity: null
+sensitivity: 0.38
+specificity: 0.89
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Morey et al. 2016, Musculoskelet Surg"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Humerushuvudet centreras i fossa och translateras sedan framåt och bakåt.
 
 ## Kliniska anteckningar
 Graderas (I–III). Bedömer både främre och bakre instabilitet.
+
+Måttlig interbedömarreliabilitet (kappa 0,48; Eshoj et al. 2018).

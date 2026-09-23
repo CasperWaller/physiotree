@@ -3,11 +3,11 @@ id: belly-press
 name: Belly Press-test (Napoleon)
 region: shoulder
 structure: "Subscapularis (övre del)"
-sensitivity: null
-specificity: null
+sensitivity: 0.28
+specificity: 0.87
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Jain et al. 2017, Am J Phys Med Rehabil (ROW-kohort)"
 video: ""
 ---
 

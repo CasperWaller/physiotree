@@ -3,11 +3,11 @@ id: full-can
 name: Full Can-test
 region: shoulder
 structure: "Supraspinatus"
-sensitivity: null
-specificity: null
+sensitivity: 0.7
+specificity: 0.81
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Jain et al. 2017, Am J Phys Med Rehabil (ROW-kohort)"
 video: ""
 ---
 
@@ -18,4 +18,4 @@ Armen i 90° i scapulaplanet, utåtroterad (tummen uppåt). Terapeuten ger nedå
 Smärta och/eller svaghet mot motstånd; ofta mindre smärtsamt att utföra än empty can.
 
 ## Kliniska anteckningar
-Belastar supraspinatus i ett mindre provocerande läge. Fyll i data med källa.
+Belastar supraspinatus i ett mindre provocerande läge.

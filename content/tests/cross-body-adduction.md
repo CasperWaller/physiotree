@@ -3,11 +3,11 @@ id: cross-body-adduction
 name: Cross-body Adduction (Horisontell adduktion)
 region: shoulder
 structure: "AC-leden"
-sensitivity: null
-specificity: null
+sensitivity: 0.77
+specificity: 0.79
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Chronopoulos et al. 2004, Am J Sports Med"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Smärta lokaliserad över AC-leden.
 
 ## Kliniska anteckningar
 Känsligt för AC-ledspatologi; kan också provocera posterior kuff.
+
+Rekommenderas inte som fristående test.

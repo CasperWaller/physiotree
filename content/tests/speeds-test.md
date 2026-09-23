@@ -3,11 +3,11 @@ id: speeds-test
 name: Speed's Test
 region: shoulder
 structure: "Långa bicepssenan"
-sensitivity: null
-specificity: null
+sensitivity: 0.2
+specificity: 0.78
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Hegedus et al. 2012, Br J Sports Med (metaanalys)"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Smärta i främre axel / bicepsfåran.
 
 ## Kliniska anteckningar
 Lågt specifikt; kan vara positivt vid både biceps- och SLAP-patologi.
+
+Låg sensitivitet för både SLAP-lesion och bicepstendinopati.

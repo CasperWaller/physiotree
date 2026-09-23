@@ -3,11 +3,11 @@ id: external-rotation-lag-sign
 name: External Rotation Lag Sign
 region: shoulder
 structure: "Supraspinatus / infraspinatus"
-sensitivity: null
-specificity: null
-lr_positive: null
+sensitivity: 0.46
+specificity: 0.94
+lr_positive: 7.2
 lr_negative: null
-source: ""
+source: "Miller et al. 2008, Arch Phys Med Rehabil"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Armen 'faller tillbaka' (lag) mot inåtrotation.
 
 ## Kliniska anteckningar
 Talar för posterosuperior kuffruptur. Storleken på lag korrelerar med rupturstorlek.
+
+Hög specificitet – bra för att bekräfta fullständig ruptur, sämre för att utesluta.

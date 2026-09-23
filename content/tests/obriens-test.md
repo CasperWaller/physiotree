@@ -3,11 +3,11 @@ id: obriens-test
 name: O'Brien's Test (Active Compression)
 region: shoulder
 structure: "Labrum (SLAP) / AC-led"
-sensitivity: null
-specificity: null
+sensitivity: 0.67
+specificity: 0.37
 lr_positive: null
 lr_negative: null
-source: ""
+source: "Hegedus et al. 2012, Br J Sports Med (metaanalys, SLAP)"
 video: ""
 ---
 
@@ -19,3 +19,5 @@ Smärta i inåtroterat läge som minskar i utåtroterat läge.
 
 ## Kliniska anteckningar
 Djup smärta talar för SLAP; smärta ovanpå axeln talar för AC-leden.
+
+För AC-ledspatologi: sens 14 %, spec 92 % (Krill et al. 2018).
