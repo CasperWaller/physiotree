@@ -2,8 +2,8 @@ import dagre from 'dagre';
 import type { Edge, Node } from '@xyflow/react';
 import { Position } from '@xyflow/react';
 
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 60;
+const NODE_WIDTH = 240;
+const NODE_HEIGHT = 80;
 
 /**
  * Räknar ut automatisk trädlayout med dagre.
