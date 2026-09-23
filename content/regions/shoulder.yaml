@@ -1,0 +1,184 @@
+region: shoulder
+label: Axel
+symptoms:
+  - id: smarta-flexion-abduktion
+    label: Smärta vid flexion / abduktion
+    tests:
+      - test: empty-can
+        positive:
+          finding: Smärta och/eller svaghet mot motstånd
+          diagnoses: [rotatorkuff-tendinopati, supraspinatus-ruptur, subakromiellt-smartsyndrom]
+        negative:
+          next_tests: [full-can, painful-arc, hawkins-kennedy, neer]
+      - test: full-can
+        positive:
+          finding: Smärta och/eller svaghet mot motstånd (ofta mindre smärtsamt än empty can)
+          diagnoses: [rotatorkuff-tendinopati, supraspinatus-ruptur, subakromiellt-smartsyndrom]
+        negative:
+          next_tests: [painful-arc, hawkins-kennedy]
+      - test: painful-arc
+        positive:
+          finding: Smärta i mellanområdet av abduktion (ca 60–120°)
+          diagnoses: [subakromiellt-smartsyndrom]
+        negative:
+          next_tests: [hawkins-kennedy, neer]
+      - test: hawkins-kennedy
+        positive:
+          finding: Smärta vid passiv inåtrotation i 90° flexion
+          diagnoses: [subakromiellt-smartsyndrom]
+        negative:
+          next_tests: [neer]
+      - test: neer
+        positive:
+          finding: Smärta vid passiv elevation i inåtroterad arm
+          diagnoses: [subakromiellt-smartsyndrom]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: svaghet-elevation
+    label: Svaghet vid elevation / oförmåga att hålla armen uppe
+    tests:
+      - test: drop-arm
+        positive:
+          finding: Armen faller okontrollerat när den sänks från abduktion
+          diagnoses: [rotatorkuff-ruptur]
+        negative:
+          next_tests: [external-rotation-lag-sign]
+      - test: external-rotation-lag-sign
+        positive:
+          finding: Oförmåga att hålla kvar armen i utåtrotation (armen "faller tillbaka")
+          diagnoses: [supraspinatus-ruptur, infraspinatus-skada]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: smarta-utatrotation
+    label: Smärta / svaghet vid utåtrotation
+    tests:
+      - test: resisted-external-rotation
+        positive:
+          finding: Smärta och/eller svaghet vid motstånd i utåtrotation
+          diagnoses: [infraspinatus-skada]
+        negative:
+          next_tests: [hornblowers-sign]
+      - test: hornblowers-sign
+        positive:
+          finding: Oförmåga att utåtrotera armen i abducerat läge
+          diagnoses: [teres-minor-skada]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: smarta-inatrotation
+    label: Smärta / svaghet vid inåtrotation
+    tests:
+      - test: lift-off
+        positive:
+          finding: Oförmåga att lyfta handen från ländryggen
+          diagnoses: [subscapularis-ruptur]
+        negative:
+          next_tests: [belly-press, bear-hug]
+      - test: belly-press
+        positive:
+          finding: Oförmåga att hålla handen mot magen med armbågen framåt
+          diagnoses: [subscapularis-ruptur]
+        negative:
+          next_tests: [bear-hug]
+      - test: bear-hug
+        positive:
+          finding: Svaghet när handen ska hållas kvar mot motsatt axel
+          diagnoses: [subscapularis-ruptur]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: framre-axelsmarta
+    label: Främre axelsmärta
+    tests:
+      - test: speeds-test
+        positive:
+          finding: Smärta i främre axel/bicepsfåran vid motstånd
+          diagnoses: [biceps-tendinopati, slap-lesion]
+        negative:
+          next_tests: [yergasons-test, obriens-test]
+      - test: yergasons-test
+        positive:
+          finding: Smärta i bicepsfåran vid motstånd mot supination
+          diagnoses: [biceps-tendinopati]
+        negative:
+          next_tests: [obriens-test]
+      - test: obriens-test
+        positive:
+          finding: Smärta i inåtroterat läge som minskar i utåtroterat läge
+          diagnoses: [slap-lesion, ac-ledspatologi]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: smarta-ovansida-axel
+    label: Smärta på ovansidan av axeln
+    tests:
+      - test: cross-body-adduction
+        positive:
+          finding: Smärta över AC-leden vid horisontell adduktion
+          diagnoses: [ac-ledspatologi]
+        negative:
+          next_tests: [ac-resisted-extension]
+      - test: ac-resisted-extension
+        positive:
+          finding: Smärta över AC-leden vid motstånd i extension
+          diagnoses: [ac-ledspatologi]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: instabilitet
+    label: Känsla av instabilitet / axeln hoppar ur led
+    tests:
+      - test: apprehension-test
+        positive:
+          finding: Oro/obehag (apprehension) vid abduktion och utåtrotation
+          diagnoses: [framre-instabilitet]
+        negative:
+          next_tests: [relocation-test, sulcus-sign, load-and-shift]
+      - test: relocation-test
+        positive:
+          finding: Apprehension minskar vid bakåtriktat tryck på humerus
+          diagnoses: [framre-instabilitet]
+        negative:
+          next_tests: [sulcus-sign, load-and-shift]
+      - test: sulcus-sign
+        positive:
+          finding: Synlig fördjupning under akromion vid nedåtdrag av armen
+          diagnoses: [inferior-multidirektionell-instabilitet]
+        negative:
+          next_tests: [load-and-shift]
+      - test: load-and-shift
+        positive:
+          finding: Ökad translation av humerushuvudet framåt/bakåt
+          diagnoses: [framre-instabilitet, posterior-instabilitet]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: nedsatt-rorlighet
+    label: Nedsatt aktiv och passiv rörlighet (särskilt utåtrotation)
+    tests:
+      - test: passive-rom-capsular
+        positive:
+          finding: Nedsatt passiv rörlighet i kapsulärt mönster (mest utåtrotation)
+          diagnoses: [frusen-skuldra]
+        negative:
+          next_tests: [cervical-spine-screen]
+
+  - id: screening
+    label: Screening (ingår alltid)
+    tests:
+      - test: cervical-spine-screen
+        positive:
+          finding: Symtom reproduceras från halsryggen (refererad smärta)
+          diagnoses: []
+          next_tests: []
+        negative:
+          next_tests: [red-flags]
+      - test: red-flags
+        positive:
+          finding: Röda flaggor (trauma, oförklarlig viktnedgång, nattlig smärta med systemiska symtom)
+          diagnoses: []
+          next_tests: []
+        negative:
+          next_tests: []
