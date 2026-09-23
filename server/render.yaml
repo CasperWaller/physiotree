@@ -1,0 +1,33 @@
+# Render.com blueprint för PhysioTree-API + Postgres.
+# Skapa konto på render.com, "New +" → "Blueprint", peka på detta repo.
+# Sätt ADMIN_EMAIL och ADMIN_PASSWORD i dashboarden (markerade sync:false).
+databases:
+  - name: physiotree-db
+    databaseName: physiotree
+    user: physio
+    plan: free
+
+services:
+  - type: web
+    name: physiotree-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npx prisma db push && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: physiotree-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://casperwaller.github.io
+      - key: PORT
+        value: "4000"
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

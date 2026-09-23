@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react';
-import type { NodeKind, Region, TestBranch } from '../lib/types';
-import { diagnoses, tests } from '../lib/content';
+import type { Diagnosis, NodeKind, Region, Test, TestBranch } from '../lib/types';
 
 interface Props {
   region: Region;
+  tests: Record<string, Test>;
+  diagnoses: Record<string, Diagnosis>;
   onClose: () => void;
   onSelect: (kind: NodeKind, refId?: string) => void;
 }
 
 type Answer = 'positive' | 'negative' | null;
 
-export function GuidedMode({ region, onClose, onSelect }: Props) {
+export function GuidedMode({ region, tests, diagnoses, onClose, onSelect }: Props) {
   // Global karta: test-id -> gren (varje test definieras en gång)
   const branches = useMemo(() => {
     const map = new Map<string, TestBranch>();

@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+}
+
+model Test {
+  id          String   @id // slug, t.ex. empty-can
+  name        String
+  region      String
+  structure   String   @default("")
+  sensitivity Float?
+  specificity Float?
+  lrPositive  Float?
+  lrNegative  Float?
+  source      String   @default("")
+  video       String   @default("")
+  body        String   @default("")
+  updatedAt   DateTime @updatedAt
+}
+
+model Diagnosis {
+  id           String   @id // slug
+  name         String
+  umbrella     String?
+  relatedTests Json     @default("[]")
+  body         String   @default("")
+  updatedAt    DateTime @updatedAt
+}
+
+model Region {
+  region    String   @id // slug, t.ex. shoulder
+  label     String
+  symptoms  Json     @default("[]")
+  updatedAt DateTime @updatedAt
+}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useReactFlow } from '@xyflow/react';
-import type { NodeKind, Region } from '../lib/types';
+import type { Diagnosis, NodeKind, Region, Test } from '../lib/types';
 import { buildSearchIndex, searchItems, type SearchItem } from '../lib/search';
 
 const KIND_LABEL: Record<NodeKind, string> = {
@@ -14,12 +14,17 @@ const KIND_LABEL: Record<NodeKind, string> = {
 
 interface Props {
   region: Region;
+  tests: Record<string, Test>;
+  diagnoses: Record<string, Diagnosis>;
   onSelect: (kind: NodeKind, refId?: string) => void;
 }
 
-export function SearchBox({ region, onSelect }: Props) {
+export function SearchBox({ region, tests, diagnoses, onSelect }: Props) {
   const flow = useReactFlow();
-  const index = useMemo(() => buildSearchIndex(region), [region]);
+  const index = useMemo(
+    () => buildSearchIndex(region, tests, diagnoses),
+    [region, tests, diagnoses],
+  );
   const [query, setQuery] = useState('');
   const results = useMemo(() => searchItems(index, query), [index, query]);
 

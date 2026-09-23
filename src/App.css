@@ -28,8 +28,14 @@
   color: #a9c0d6;
 }
 
-.app-header__guided {
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   flex: 0 0 auto;
+}
+
+.app-header__guided {
   border: 1px solid #2e7d32;
   background: #2e7d32;
   color: #fff;
@@ -42,6 +48,152 @@
 
 .app-header__guided:hover {
   background: #388e3c;
+}
+
+.app-header__login {
+  border: 1px solid #45607a;
+  background: transparent;
+  color: #cfe0f0;
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.app-header__login:hover {
+  background: rgba(69, 96, 122, 0.35);
+}
+
+.app-header__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #a9c0d6;
+}
+
+.app-header__user button {
+  border: 1px solid #45607a;
+  background: transparent;
+  color: #cfe0f0;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.app-status {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #445;
+  font-size: 15px;
+}
+
+.app-status button {
+  border: 1px solid #6a1b9a;
+  background: transparent;
+  color: inherit;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ---- Redigeringsformulär ---- */
+.side-panel__edit {
+  border: 1px solid #6a1b9a;
+  background: #6a1b9a;
+  color: #fff;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.edit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.edit label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.edit input,
+.edit textarea {
+  font: inherit;
+  font-weight: 400;
+  padding: 7px 9px;
+  border-radius: 7px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  background: rgba(127, 127, 127, 0.08);
+  color: inherit;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.edit textarea {
+  resize: vertical;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+}
+
+.edit__row {
+  display: flex;
+  gap: 10px;
+}
+
+.edit__row label {
+  flex: 1;
+}
+
+.edit__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.edit__actions button {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  background: transparent;
+  color: inherit;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit__save {
+  border-color: #2e7d32 !important;
+  background: #2e7d32 !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.edit__save:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.edit__error {
+  color: #c62828;
+  font-size: 13px;
+  margin: 0;
+}
+
+.login {
+  width: 380px;
 }
 
 .app-main {

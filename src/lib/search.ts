@@ -1,5 +1,4 @@
-import type { NodeKind, Region } from './types';
-import { diagnoses, tests } from './content';
+import type { Diagnosis, NodeKind, Region, Test } from './types';
 
 export interface SearchItem {
   /** node-id i grafen, för att kunna centrera */
@@ -11,7 +10,11 @@ export interface SearchItem {
 }
 
 /** Bygger ett sökindex över symtom, tester och diagnoser i regionen. */
-export function buildSearchIndex(region: Region): SearchItem[] {
+export function buildSearchIndex(
+  region: Region,
+  tests: Record<string, Test>,
+  diagnoses: Record<string, Diagnosis>,
+): SearchItem[] {
   const items: SearchItem[] = [];
   const seen = new Set<string>();
 

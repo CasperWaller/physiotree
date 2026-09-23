@@ -1,61 +1,56 @@
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { Diagnosis, Test } from '../lib/types';
 
 interface Props {
   test?: Test;
   diagnosis?: Diagnosis;
+  isAdmin: boolean;
   onClose: () => void;
   onSelectTest?: (id: string) => void;
+  onSaveTest: (id: string, test: Test) => Promise<void>;
+  onSaveDiagnosis: (id: string, diagnosis: Diagnosis) => Promise<void>;
 }
 
 function formatPercent(value: number | null): string {
   return value == null ? 'ej angivet' : `${Math.round(value * 100)} %`;
 }
-
 function formatLr(value: number | null): string {
   return value == null ? 'ej angivet' : value.toFixed(1);
 }
+function numOrNull(v: string): number | null {
+  const t = v.trim().replace(',', '.');
+  if (t === '') return null;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
 
+/* ---------- Läsvy: test ---------- */
 function TestView({ test }: { test: Test }) {
   const hasData =
     test.sensitivity != null ||
     test.specificity != null ||
     test.lr_positive != null ||
     test.lr_negative != null;
-
   return (
     <>
       <p className="side-panel__structure">
         Belastar: <strong>{test.structure || 'ej angivet'}</strong>
       </p>
-
       <h3>Diagnostisk träffsäkerhet</h3>
       {hasData ? (
         <table className="accuracy">
           <tbody>
-            <tr>
-              <td>Sensitivitet</td>
-              <td>{formatPercent(test.sensitivity)}</td>
-            </tr>
-            <tr>
-              <td>Specificitet</td>
-              <td>{formatPercent(test.specificity)}</td>
-            </tr>
-            <tr>
-              <td>LR+</td>
-              <td>{formatLr(test.lr_positive)}</td>
-            </tr>
-            <tr>
-              <td>LR−</td>
-              <td>{formatLr(test.lr_negative)}</td>
-            </tr>
+            <tr><td>Sensitivitet</td><td>{formatPercent(test.sensitivity)}</td></tr>
+            <tr><td>Specificitet</td><td>{formatPercent(test.specificity)}</td></tr>
+            <tr><td>LR+</td><td>{formatLr(test.lr_positive)}</td></tr>
+            <tr><td>LR−</td><td>{formatLr(test.lr_negative)}</td></tr>
           </tbody>
         </table>
       ) : (
         <p className="side-panel__muted">Ännu ingen källbelagd data.</p>
       )}
       {test.source && <p className="side-panel__source">Källa: {test.source}</p>}
-
       {test.video && (
         <p>
           <a href={test.video} target="_blank" rel="noreferrer" className="side-panel__video">
@@ -63,7 +58,6 @@ function TestView({ test }: { test: Test }) {
           </a>
         </p>
       )}
-
       <div className="side-panel__body">
         <ReactMarkdown>{test.body}</ReactMarkdown>
       </div>
@@ -71,6 +65,62 @@ function TestView({ test }: { test: Test }) {
   );
 }
 
+/* ---------- Redigeringsvy: test ---------- */
+function TestEdit({
+  test,
+  onSave,
+  onCancel,
+}: {
+  test: Test;
+  onSave: (t: Test) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const [form, setForm] = useState<Test>(test);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => setForm(test), [test]);
+
+  const set = (patch: Partial<Test>) => setForm((f) => ({ ...f, ...patch }));
+
+  const save = async () => {
+    setSaving(true);
+    setError(null);
+    try {
+      await onSave(form);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Kunde inte spara');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="edit">
+      <label>Namn<input value={form.name} onChange={(e) => set({ name: e.target.value })} /></label>
+      <label>Struktur<input value={form.structure} onChange={(e) => set({ structure: e.target.value })} /></label>
+      <div className="edit__row">
+        <label>Sensitivitet (0–1)<input value={form.sensitivity ?? ''} onChange={(e) => set({ sensitivity: numOrNull(e.target.value) })} /></label>
+        <label>Specificitet (0–1)<input value={form.specificity ?? ''} onChange={(e) => set({ specificity: numOrNull(e.target.value) })} /></label>
+      </div>
+      <div className="edit__row">
+        <label>LR+<input value={form.lr_positive ?? ''} onChange={(e) => set({ lr_positive: numOrNull(e.target.value) })} /></label>
+        <label>LR−<input value={form.lr_negative ?? ''} onChange={(e) => set({ lr_negative: numOrNull(e.target.value) })} /></label>
+      </div>
+      <label>Källa<input value={form.source} onChange={(e) => set({ source: e.target.value })} /></label>
+      <label>Video-URL<input value={form.video} onChange={(e) => set({ video: e.target.value })} /></label>
+      <label>Brödtext (Markdown)<textarea rows={8} value={form.body} onChange={(e) => set({ body: e.target.value })} /></label>
+      {error && <p className="edit__error">{error}</p>}
+      <div className="edit__actions">
+        <button type="button" className="edit__save" onClick={save} disabled={saving}>
+          {saving ? 'Sparar…' : 'Spara'}
+        </button>
+        <button type="button" onClick={onCancel} disabled={saving}>Avbryt</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Läsvy: diagnos ---------- */
 function DiagnosisView({
   diagnosis,
   onSelectTest,
@@ -94,9 +144,7 @@ function DiagnosisView({
           <ul className="side-panel__links">
             {diagnosis.related_tests.map((t) => (
               <li key={t}>
-                <button type="button" onClick={() => onSelectTest?.(t)}>
-                  {t}
-                </button>
+                <button type="button" onClick={() => onSelectTest?.(t)}>{t}</button>
               </li>
             ))}
           </ul>
@@ -106,20 +154,111 @@ function DiagnosisView({
   );
 }
 
-export function SidePanel({ test, diagnosis, onClose, onSelectTest }: Props) {
+/* ---------- Redigeringsvy: diagnos ---------- */
+function DiagnosisEdit({
+  diagnosis,
+  onSave,
+  onCancel,
+}: {
+  diagnosis: Diagnosis;
+  onSave: (d: Diagnosis) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const [form, setForm] = useState<Diagnosis>(diagnosis);
+  const [related, setRelated] = useState(diagnosis.related_tests.join(', '));
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    setForm(diagnosis);
+    setRelated(diagnosis.related_tests.join(', '));
+  }, [diagnosis]);
+
+  const save = async () => {
+    setSaving(true);
+    setError(null);
+    try {
+      await onSave({
+        ...form,
+        related_tests: related.split(',').map((s) => s.trim()).filter(Boolean),
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Kunde inte spara');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="edit">
+      <label>Namn<input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></label>
+      <label>Paraplydiagnos (id, valfritt)<input value={form.umbrella ?? ''} onChange={(e) => setForm({ ...form, umbrella: e.target.value || null })} /></label>
+      <label>Relaterade tester (id, kommaseparerat)<input value={related} onChange={(e) => setRelated(e.target.value)} /></label>
+      <label>Brödtext (Markdown)<textarea rows={8} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} /></label>
+      {error && <p className="edit__error">{error}</p>}
+      <div className="edit__actions">
+        <button type="button" className="edit__save" onClick={save} disabled={saving}>
+          {saving ? 'Sparar…' : 'Spara'}
+        </button>
+        <button type="button" onClick={onCancel} disabled={saving}>Avbryt</button>
+      </div>
+    </div>
+  );
+}
+
+export function SidePanel({
+  test,
+  diagnosis,
+  isAdmin,
+  onClose,
+  onSelectTest,
+  onSaveTest,
+  onSaveDiagnosis,
+}: Props) {
+  const [editing, setEditing] = useState(false);
+  // Avsluta redigering när valet ändras eller panelen stängs
+  useEffect(() => setEditing(false), [test?.id, diagnosis?.id]);
+
   if (!test && !diagnosis) return null;
+
   return (
     <aside className="side-panel">
-      <button type="button" className="side-panel__close" onClick={onClose} aria-label="Stäng">
-        ×
-      </button>
+      <button type="button" className="side-panel__close" onClick={onClose} aria-label="Stäng">×</button>
       <span className="side-panel__tag">{test ? 'Test' : 'Diagnos'}</span>
       <h2>{test ? test.name : diagnosis!.name}</h2>
-      {test ? (
-        <TestView test={test} />
-      ) : (
-        <DiagnosisView diagnosis={diagnosis!} onSelectTest={onSelectTest} />
+
+      {isAdmin && !editing && (
+        <button type="button" className="side-panel__edit" onClick={() => setEditing(true)}>
+          ✎ Redigera
+        </button>
       )}
+
+      {test &&
+        (editing ? (
+          <TestEdit
+            test={test}
+            onCancel={() => setEditing(false)}
+            onSave={async (t) => {
+              await onSaveTest(test.id, t);
+              setEditing(false);
+            }}
+          />
+        ) : (
+          <TestView test={test} />
+        ))}
+
+      {diagnosis &&
+        (editing ? (
+          <DiagnosisEdit
+            diagnosis={diagnosis}
+            onCancel={() => setEditing(false)}
+            onSave={async (d) => {
+              await onSaveDiagnosis(diagnosis.id, d);
+              setEditing(false);
+            }}
+          />
+        ) : (
+          <DiagnosisView diagnosis={diagnosis} onSelectTest={onSelectTest} />
+        ))}
     </aside>
   );
 }

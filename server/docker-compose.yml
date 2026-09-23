@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: physio
+      POSTGRES_PASSWORD: physio
+      POSTGRES_DB: physiotree
+    ports:
+      - "5434:5432"
+    volumes:
+      - physiotree_pgdata:/var/lib/postgresql
+
+volumes:
+  physiotree_pgdata:
