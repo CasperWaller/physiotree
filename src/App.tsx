@@ -3,6 +3,7 @@ import {
   Background,
   Controls,
   MiniMap,
+  Panel,
   ReactFlow,
   ReactFlowProvider,
   type Node,
@@ -14,6 +15,8 @@ import { buildGraph, type PhysNodeData } from './lib/buildGraph';
 import { diagnoses, regions, tests } from './lib/content';
 import { nodeTypes } from './components/PhysNode';
 import { SidePanel } from './components/SidePanel';
+import { SearchBox } from './components/SearchBox';
+import { GuidedMode } from './components/GuidedMode';
 import type { NodeKind } from './lib/types';
 import './App.css';
 
@@ -28,7 +31,9 @@ const MINIMAP_COLORS: Record<NodeKind, string> = {
 
 const region = regions.shoulder;
 
-function Tree({ onSelect }: { onSelect: (kind: NodeKind, refId?: string) => void }) {
+type SelectFn = (kind: NodeKind, refId?: string) => void;
+
+function Tree({ onSelect }: { onSelect: SelectFn }) {
   const { nodes, edges } = useMemo(() => {
     const graph = buildGraph(region, tests, diagnoses);
     const typedNodes = graph.nodes.map((n) => ({ ...n, type: 'phys' }));
@@ -45,8 +50,8 @@ function Tree({ onSelect }: { onSelect: (kind: NodeKind, refId?: string) => void
 
   return (
     <ReactFlow
-      nodes={nodes}
-      edges={edges}
+      defaultNodes={nodes}
+      defaultEdges={edges}
       nodeTypes={nodeTypes}
       onNodeClick={handleNodeClick}
       fitView
@@ -54,6 +59,9 @@ function Tree({ onSelect }: { onSelect: (kind: NodeKind, refId?: string) => void
       nodesDraggable={false}
       proOptions={{ hideAttribution: true }}
     >
+      <Panel position="top-left">
+        <SearchBox region={region} onSelect={onSelect} />
+      </Panel>
       <Background />
       <Controls />
       <MiniMap
@@ -68,8 +76,9 @@ function Tree({ onSelect }: { onSelect: (kind: NodeKind, refId?: string) => void
 function App() {
   const [selectedTest, setSelectedTest] = useState<string | undefined>();
   const [selectedDiagnosis, setSelectedDiagnosis] = useState<string | undefined>();
+  const [guided, setGuided] = useState(false);
 
-  const handleSelect = useCallback((kind: NodeKind, refId?: string) => {
+  const handleSelect = useCallback<SelectFn>((kind, refId) => {
     if (kind === 'test' && refId) {
       setSelectedTest(refId);
       setSelectedDiagnosis(undefined);
@@ -87,8 +96,17 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>PhysioTree 🦴</h1>
-        <p>Interaktivt släktträd för fysioterapeutisk bedömning — {region.label}</p>
+        <div className="app-header__titles">
+          <h1>PhysioTree 🦴</h1>
+          <p>Fysioterapeutisk bedömning — {region.label}</p>
+        </div>
+        <button
+          type="button"
+          className="app-header__guided"
+          onClick={() => setGuided(true)}
+        >
+          ▶ Guidat läge
+        </button>
       </header>
       <div className="app-main">
         <main className="app-canvas">
@@ -103,6 +121,13 @@ function App() {
           onSelectTest={(id) => handleSelect('test', id)}
         />
       </div>
+      {guided && (
+        <GuidedMode
+          region={region}
+          onClose={() => setGuided(false)}
+          onSelect={handleSelect}
+        />
+      )}
     </div>
   );
 }
