@@ -1,0 +1,51 @@
+region: lumbar
+label: Ländrygg
+symptoms:
+  - id: bensmarta-ischias
+    label: Bensmärta nedanför knät / misstänkt ischias
+    tests:
+      - test: straight-leg-raise
+        positive:
+          finding: Reproducerad bensmärta vid ca 30–70°
+          next_tests: [crossed-slr, slump]
+        negative:
+          next_tests: [red-flags-lumbar]
+      - test: crossed-slr
+        positive:
+          finding: Symtom i drabbat ben när friska benet lyfts
+          diagnoses: [lumbal-radikulopati]
+        negative:
+          next_tests: [slump]
+      - test: slump
+        positive:
+          finding: Symtom reproduceras och ändras vid differentiering
+          diagnoses: [lumbal-radikulopati]
+        negative:
+          next_tests: [lumbar-neuro-screening]
+      - test: lumbar-neuro-screening
+        positive:
+          finding: Segmentellt neurologiskt bortfall
+          diagnoses: [lumbal-radikulopati]
+        negative:
+          next_tests: [red-flags-lumbar]
+
+  - id: si-smarta
+    label: Smärta över SI-led / skinka
+    tests:
+      - test: laslett-cluster
+        positive:
+          finding: ≥ 2 positiva SI-provokationstester
+          diagnoses: [si-ledssmarta]
+        negative:
+          next_tests: [red-flags-lumbar]
+
+  - id: screening-lumbar
+    label: Screening (ingår alltid)
+    tests:
+      - test: red-flags-lumbar
+        positive:
+          finding: Röd flagga – skyndsam utredning/remiss
+          diagnoses: []
+          next_tests: []
+        negative:
+          diagnoses: [ospecifik-landryggssmarta]

@@ -1,0 +1,41 @@
+region: ankle
+label: Fotled
+symptoms:
+  - id: inversionstrauma
+    label: Inversionstrauma / lateral fotledssmärta
+    tests:
+      - test: ottawa-ankle-rules
+        positive:
+          finding: Kriterium uppfyllt – röntgen för att utesluta fraktur
+          diagnoses: []
+          next_tests: []
+        negative:
+          next_tests: [anterior-drawer-ankle, talar-tilt-test, syndesmosis-squeeze-test]
+      - test: anterior-drawer-ankle
+        positive:
+          finding: Ökad främre translation
+          diagnoses: [lateral-fotledsstukning]
+        negative:
+          next_tests: [talar-tilt-test]
+      - test: talar-tilt-test
+        positive:
+          finding: Ökad inversionsgapning
+          diagnoses: [lateral-fotledsstukning]
+        negative:
+          next_tests: [syndesmosis-squeeze-test]
+      - test: syndesmosis-squeeze-test
+        positive:
+          finding: Smärta distalt vid syndesmosen
+          diagnoses: [syndesmosskada]
+        negative:
+          next_tests: []
+
+  - id: misstankt-akillesruptur
+    label: Plötslig smärta baktill / misstänkt akillesseneruptur
+    tests:
+      - test: thompson-test
+        positive:
+          finding: Utebliven plantarflexion vid vadklämning
+          diagnoses: [akillesruptur]
+        negative:
+          next_tests: []

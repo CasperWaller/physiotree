@@ -1,0 +1,51 @@
+region: cervical
+label: Halsrygg
+symptoms:
+  - id: utstralande-armsmarta
+    label: Utstrålande arm-/nacksmärta, misstänkt radikulopati
+    tests:
+      - test: upper-limb-tension-test-1
+        positive:
+          finding: Reproducerade symtom som ändras vid differentiering
+          next_tests: [spurlings-test, cervical-distraction-test]
+        negative:
+          next_tests: [red-flags-cervical]
+      - test: spurlings-test
+        positive:
+          finding: Reproducerad utstrålande arm-/handsmärta
+          diagnoses: [cervikal-radikulopati]
+        negative:
+          next_tests: [cervical-distraction-test, wainner-cluster]
+      - test: cervical-distraction-test
+        positive:
+          finding: Symtomen lindras vid distraktion
+          diagnoses: [cervikal-radikulopati]
+        negative:
+          next_tests: [wainner-cluster]
+      - test: wainner-cluster
+        positive:
+          finding: ≥ 3 av 4 tester positiva
+          diagnoses: [cervikal-radikulopati]
+        negative:
+          next_tests: [red-flags-cervical]
+
+  - id: ovre-cervikal-instabilitet-symtom
+    label: Misstänkt övre cervikal instabilitet (efter trauma/RA)
+    tests:
+      - test: sharp-purser-test
+        positive:
+          finding: Klunk eller minskade symtom
+          diagnoses: [ovre-cervikal-instabilitet]
+        negative:
+          next_tests: [red-flags-cervical]
+
+  - id: screening-cervical
+    label: Screening (ingår alltid)
+    tests:
+      - test: red-flags-cervical
+        positive:
+          finding: Röd flagga – utredning/remiss
+          diagnoses: []
+          next_tests: []
+        negative:
+          diagnoses: [ospecifik-nacksmarta]
