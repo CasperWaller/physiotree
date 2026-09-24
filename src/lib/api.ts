@@ -75,6 +75,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     const msg = await res.json().catch(() => ({}));
     throw new Error((msg as { error?: string }).error ?? `HTTP ${res.status}`);
   }
+  if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
 
@@ -105,8 +106,8 @@ export async function login(email: string, password: string) {
 
 const authHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
 
-export async function updateTest(token: string, id: string, test: Test): Promise<Test> {
-  const payload = {
+function testPayload(test: Test) {
+  return {
     name: test.name,
     region: test.region,
     structure: test.structure,
@@ -118,29 +119,77 @@ export async function updateTest(token: string, id: string, test: Test): Promise
     video: test.video,
     body: test.body,
   };
-  const t = await request<ApiTest>(`/api/tests/${id}`, {
-    method: 'PUT',
-    headers: authHeader(token),
-    body: JSON.stringify(payload),
-  });
-  return toTest(t);
+}
+function diagnosisPayload(d: Diagnosis) {
+  return { name: d.name, umbrella: d.umbrella, relatedTests: d.related_tests, body: d.body };
 }
 
-export async function updateDiagnosis(
-  token: string,
-  id: string,
-  diagnosis: Diagnosis,
-): Promise<Diagnosis> {
-  const payload = {
-    name: diagnosis.name,
-    umbrella: diagnosis.umbrella,
-    relatedTests: diagnosis.related_tests,
-    body: diagnosis.body,
-  };
-  const d = await request<ApiDiagnosis>(`/api/diagnoses/${id}`, {
+export async function updateTest(token: string, id: string, test: Test): Promise<Test> {
+  return toTest(
+    await request<ApiTest>(`/api/tests/${id}`, {
+      method: 'PUT',
+      headers: authHeader(token),
+      body: JSON.stringify(testPayload(test)),
+    }),
+  );
+}
+
+export async function createTest(token: string, test: Test): Promise<Test> {
+  return toTest(
+    await request<ApiTest>('/api/tests', {
+      method: 'POST',
+      headers: authHeader(token),
+      body: JSON.stringify({ id: test.id, ...testPayload(test) }),
+    }),
+  );
+}
+
+export async function deleteTest(token: string, id: string): Promise<void> {
+  await request<void>(`/api/tests/${id}`, { method: 'DELETE', headers: authHeader(token) });
+}
+
+export async function updateDiagnosis(token: string, id: string, d: Diagnosis): Promise<Diagnosis> {
+  return toDiagnosis(
+    await request<ApiDiagnosis>(`/api/diagnoses/${id}`, {
+      method: 'PUT',
+      headers: authHeader(token),
+      body: JSON.stringify(diagnosisPayload(d)),
+    }),
+  );
+}
+
+export async function createDiagnosis(token: string, d: Diagnosis): Promise<Diagnosis> {
+  return toDiagnosis(
+    await request<ApiDiagnosis>('/api/diagnoses', {
+      method: 'POST',
+      headers: authHeader(token),
+      body: JSON.stringify({ id: d.id, ...diagnosisPayload(d) }),
+    }),
+  );
+}
+
+export async function deleteDiagnosis(token: string, id: string): Promise<void> {
+  await request<void>(`/api/diagnoses/${id}`, { method: 'DELETE', headers: authHeader(token) });
+}
+
+export async function updateRegion(token: string, region: Region): Promise<Region> {
+  const r = await request<ApiRegion>(`/api/regions/${region.region}`, {
     method: 'PUT',
     headers: authHeader(token),
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ label: region.label, symptoms: region.symptoms }),
   });
-  return toDiagnosis(d);
+  return { ...r } as Region;
+}
+
+export async function createRegion(token: string, region: Region): Promise<Region> {
+  const r = await request<ApiRegion>('/api/regions', {
+    method: 'POST',
+    headers: authHeader(token),
+    body: JSON.stringify({ region: region.region, label: region.label, symptoms: region.symptoms }),
+  });
+  return { ...r } as Region;
+}
+
+export async function deleteRegion(token: string, id: string): Promise<void> {
+  await request<void>(`/api/regions/${id}`, { method: 'DELETE', headers: authHeader(token) });
 }

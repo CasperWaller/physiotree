@@ -12,7 +12,16 @@ import '@xyflow/react/dist/style.css';
 
 import { layoutTree } from './lib/layout';
 import { buildGraph, type PhysNodeData } from './lib/buildGraph';
-import { fetchContent, updateDiagnosis, updateTest, type ContentData } from './lib/api';
+import {
+  createDiagnosis,
+  createRegion,
+  createTest,
+  fetchContent,
+  updateDiagnosis,
+  updateRegion,
+  updateTest,
+  type ContentData,
+} from './lib/api';
 import { useAuth } from './lib/useAuth';
 import { nodeTypes } from './components/PhysNode';
 import { SidePanel } from './components/SidePanel';
@@ -20,6 +29,8 @@ import { SearchBox } from './components/SearchBox';
 import { GuidedMode } from './components/GuidedMode';
 import { LoginModal } from './components/LoginModal';
 import { Legend } from './components/Legend';
+import { TreeEditor } from './components/TreeEditor';
+import { NewItemModal } from './components/NewItemModal';
 import type { Diagnosis, NodeKind, Region, Test } from './lib/types';
 import './App.css';
 
@@ -99,6 +110,8 @@ function App() {
   const [selectedDiagnosis, setSelectedDiagnosis] = useState<string | undefined>();
   const [guided, setGuided] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [treeOpen, setTreeOpen] = useState(false);
+  const [newOpen, setNewOpen] = useState(false);
 
   const { token, user, isAdmin, login, logout } = useAuth();
 
@@ -165,6 +178,52 @@ function App() {
     [token],
   );
 
+  // Hämtar om allt innehåll (efter strukturändringar / nyskapande)
+  const reload = useCallback(async () => {
+    const c = await fetchContent();
+    setContent(c);
+    setRev((r) => r + 1);
+    return c;
+  }, []);
+
+  const handleSaveRegion = useCallback(
+    async (r: Region) => {
+      if (!token) throw new Error('Ej inloggad');
+      await updateRegion(token, r);
+      await reload();
+      setTreeOpen(false);
+    },
+    [token, reload],
+  );
+
+  const handleCreateTest = useCallback(
+    async (t: Test) => {
+      if (!token) throw new Error('Ej inloggad');
+      await createTest(token, t);
+      await reload();
+    },
+    [token, reload],
+  );
+
+  const handleCreateDiagnosis = useCallback(
+    async (d: Diagnosis) => {
+      if (!token) throw new Error('Ej inloggad');
+      await createDiagnosis(token, d);
+      await reload();
+    },
+    [token, reload],
+  );
+
+  const handleCreateRegion = useCallback(
+    async (r: Region) => {
+      if (!token) throw new Error('Ej inloggad');
+      await createRegion(token, r);
+      await reload();
+      setRegionId(r.region); // hoppa till den nya regionen
+    },
+    [token, reload],
+  );
+
   return (
     <div className="app">
       <header className="app-header">
@@ -191,6 +250,16 @@ function App() {
             <button type="button" className="app-header__guided" onClick={() => setGuided(true)}>
               ▶ Guidat läge
             </button>
+          )}
+          {isAdmin && content && selectedRegion && (
+            <>
+              <button type="button" className="app-header__admin" onClick={() => setTreeOpen(true)}>
+                ✎ Träd
+              </button>
+              <button type="button" className="app-header__admin" onClick={() => setNewOpen(true)}>
+                + Ny
+              </button>
+            </>
           )}
           {isAdmin ? (
             <span className="app-header__user">
@@ -257,6 +326,25 @@ function App() {
         />
       )}
       {loginOpen && <LoginModal onClose={() => setLoginOpen(false)} onLogin={login} />}
+      {treeOpen && content && selectedRegion && (
+        <TreeEditor
+          region={selectedRegion}
+          tests={content.tests}
+          diagnoses={content.diagnoses}
+          onSave={handleSaveRegion}
+          onClose={() => setTreeOpen(false)}
+        />
+      )}
+      {newOpen && content && selectedRegion && (
+        <NewItemModal
+          regions={content.regions}
+          currentRegionId={selectedRegion.region}
+          onCreateTest={handleCreateTest}
+          onCreateDiagnosis={handleCreateDiagnosis}
+          onCreateRegion={handleCreateRegion}
+          onClose={() => setNewOpen(false)}
+        />
+      )}
     </div>
   );
 }

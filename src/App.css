@@ -71,6 +71,188 @@
   cursor: pointer;
 }
 
+.app-header__admin {
+  border: 1px solid #6a1b9a;
+  background: #6a1b9a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.app-header__admin:hover {
+  background: #7b24ad;
+}
+
+/* ---- Trädredigerare ---- */
+.tree-editor {
+  width: 640px;
+}
+
+.te-input {
+  font: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 9px;
+  border-radius: 7px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  background: rgba(127, 127, 127, 0.08);
+  color: inherit;
+}
+
+.te-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.7;
+  margin: 8px 0 3px;
+}
+
+.te-symptom {
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 14px;
+}
+
+.te-symptom__head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.te-branch {
+  border-left: 3px solid #6a1b9a;
+  padding: 8px 10px;
+  margin: 10px 0 0 4px;
+  background: rgba(106, 27, 154, 0.05);
+  border-radius: 0 8px 8px 0;
+}
+
+.te-branch__head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.te-finding {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(128, 128, 128, 0.3);
+}
+
+.te-finding__title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.te-del {
+  border: 1px solid rgba(198, 40, 40, 0.6);
+  background: transparent;
+  color: #c62828;
+  border-radius: 7px;
+  padding: 5px 9px;
+  font-size: 12px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.te-add {
+  margin-top: 10px;
+  border: 1px dashed #6a1b9a;
+  background: transparent;
+  color: #6a1b9a;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.te-add--symptom {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.te-actions {
+  position: sticky;
+  bottom: -22px;
+  background: inherit;
+  padding-top: 12px;
+  margin-top: 16px;
+}
+
+/* multi-select chips */
+.ms {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ms__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.ms__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(106, 27, 154, 0.15);
+  border: 1px solid rgba(106, 27, 154, 0.4);
+  border-radius: 999px;
+  padding: 2px 4px 2px 9px;
+  font-size: 12px;
+}
+
+.ms__chip button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.ms select,
+.te-branch__head select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 7px;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  background: rgba(127, 127, 127, 0.08);
+  color: inherit;
+}
+
+.te-kinds {
+  display: flex;
+  gap: 8px;
+}
+
+.te-kind {
+  flex: 1;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  background: transparent;
+  color: inherit;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.te-kind--active {
+  border-color: #6a1b9a;
+  background: rgba(106, 27, 154, 0.15);
+  font-weight: 600;
+}
+
 .app-header__login:hover {
   background: rgba(69, 96, 122, 0.35);
 }
