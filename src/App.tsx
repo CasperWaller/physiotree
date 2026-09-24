@@ -19,6 +19,7 @@ import { SidePanel } from './components/SidePanel';
 import { SearchBox } from './components/SearchBox';
 import { GuidedMode } from './components/GuidedMode';
 import { LoginModal } from './components/LoginModal';
+import { Legend } from './components/Legend';
 import type { Diagnosis, NodeKind, Region, Test } from './lib/types';
 import './App.css';
 
@@ -73,6 +74,9 @@ function Tree({
       <Panel position="top-left">
         <SearchBox region={region} tests={tests} diagnoses={diagnoses} onSelect={onSelect} />
       </Panel>
+      <Panel position="top-right">
+        <Legend />
+      </Panel>
       <Background />
       <Controls />
       <MiniMap
@@ -87,6 +91,7 @@ function Tree({
 function App() {
   const [content, setContent] = useState<ContentData | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [slowLoad, setSlowLoad] = useState(false);
   const [rev, setRev] = useState(0); // bumpas vid redigering → tvingar om-layout
 
   const [regionId, setRegionId] = useState<string | undefined>();
@@ -108,6 +113,16 @@ function App() {
   }, []);
 
   useEffect(load, [load]);
+
+  // Render gratis-tjänster somnar; visa en vänligare ledtext om laddningen drar ut
+  useEffect(() => {
+    if (content || loadError) {
+      setSlowLoad(false);
+      return;
+    }
+    const id = setTimeout(() => setSlowLoad(true), 4000);
+    return () => clearTimeout(id);
+  }, [content, loadError]);
 
   const handleSelect = useCallback<SelectFn>((kind, refId) => {
     if (kind === 'test' && refId) {
@@ -197,7 +212,16 @@ function App() {
             <button type="button" onClick={load}>Försök igen</button>
           </div>
         )}
-        {!loadError && !content && <div className="app-status">Laddar innehåll…</div>}
+        {!loadError && !content && (
+          <div className="app-status">
+            <p>Laddar innehåll…</p>
+            {slowLoad && (
+              <p className="app-status__hint">
+                Servern kan behöva vakna – det tar upp till ~30 s på gratisnivån.
+              </p>
+            )}
+          </div>
+        )}
         {content && selectedRegion && (
           <main className="app-canvas">
             <ReactFlowProvider key={`${selectedRegion.region}:${rev}`}>

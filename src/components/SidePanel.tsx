@@ -18,6 +18,31 @@ function formatPercent(value: number | null): string {
 function formatLr(value: number | null): string {
   return value == null ? 'ej angivet' : value.toFixed(1);
 }
+
+// Styrka på likelihood ratio (grov tolkning)
+function lrStrength(kind: 'pos' | 'neg', v: number | null): string | null {
+  if (v == null) return null;
+  if (kind === 'pos') {
+    if (v >= 10) return 'stor';
+    if (v >= 5) return 'måttlig';
+    if (v >= 2) return 'liten';
+    return 'obetydlig';
+  }
+  if (v <= 0.1) return 'stor';
+  if (v <= 0.2) return 'måttlig';
+  if (v <= 0.5) return 'liten';
+  return 'obetydlig';
+}
+
+// Kort tolkning av sensitivitet/specificitet
+function snSpNotes(test: Test): string[] {
+  const notes: string[] = [];
+  if (test.sensitivity != null && test.sensitivity >= 0.85)
+    notes.push('Högt sensitivt – ett negativt test hjälper att utesluta (SnNout).');
+  if (test.specificity != null && test.specificity >= 0.85)
+    notes.push('Högt specifikt – ett positivt test hjälper att bekräfta (SpPin).');
+  return notes;
+}
 function numOrNull(v: string): number | null {
   const t = v.trim().replace(',', '.');
   if (t === '') return null;
@@ -39,14 +64,41 @@ function TestView({ test }: { test: Test }) {
       </p>
       <h3>Diagnostisk träffsäkerhet</h3>
       {hasData ? (
-        <table className="accuracy">
-          <tbody>
-            <tr><td>Sensitivitet</td><td>{formatPercent(test.sensitivity)}</td></tr>
-            <tr><td>Specificitet</td><td>{formatPercent(test.specificity)}</td></tr>
-            <tr><td>LR+</td><td>{formatLr(test.lr_positive)}</td></tr>
-            <tr><td>LR−</td><td>{formatLr(test.lr_negative)}</td></tr>
-          </tbody>
-        </table>
+        <>
+          <table className="accuracy">
+            <tbody>
+              <tr><td>Sensitivitet</td><td>{formatPercent(test.sensitivity)}</td></tr>
+              <tr><td>Specificitet</td><td>{formatPercent(test.specificity)}</td></tr>
+              <tr>
+                <td>LR+</td>
+                <td>
+                  {formatLr(test.lr_positive)}
+                  {lrStrength('pos', test.lr_positive) && (
+                    <span className="accuracy__tag"> ({lrStrength('pos', test.lr_positive)})</span>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>LR−</td>
+                <td>
+                  {formatLr(test.lr_negative)}
+                  {lrStrength('neg', test.lr_negative) && (
+                    <span className="accuracy__tag"> ({lrStrength('neg', test.lr_negative)})</span>
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          {snSpNotes(test).map((n) => (
+            <p key={n} className="side-panel__interpret">{n}</p>
+          ))}
+          <details className="side-panel__explain">
+            <summary>Vad betyder siffrorna?</summary>
+            <p><strong>Sensitivitet</strong> = andel sjuka som testet fångar. Högt värde → ett <em>negativt</em> test hjälper att utesluta (SnNout).</p>
+            <p><strong>Specificitet</strong> = andel friska som testet friar. Högt värde → ett <em>positivt</em> test hjälper att bekräfta (SpPin).</p>
+            <p><strong>LR+</strong> ökar sannolikheten vid positivt test (&gt;10 stor, 5–10 måttlig). <strong>LR−</strong> minskar den vid negativt test (&lt;0,1 stor, 0,1–0,2 måttlig).</p>
+          </details>
+        </>
       ) : (
         <p className="side-panel__muted">Ännu ingen källbelagd data.</p>
       )}

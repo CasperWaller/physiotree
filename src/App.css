@@ -113,6 +113,103 @@
   cursor: pointer;
 }
 
+.app-status__hint {
+  font-size: 13px;
+  opacity: 0.65;
+  max-width: 320px;
+  text-align: center;
+}
+
+/* ---- Teckenförklaring ---- */
+.legend {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  font-size: 12px;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .legend {
+    background: rgba(30, 32, 40, 0.95);
+    color: #e8e8e8;
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.legend__toggle {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.legend__list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.legend__list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend__swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.legend__hint {
+  margin-top: 3px;
+  font-size: 11px;
+  opacity: 0.7;
+  max-width: 190px;
+}
+
+/* ---- Tolkning i sidopanelen ---- */
+.accuracy__tag {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.side-panel__interpret {
+  font-size: 13px;
+  margin: 6px 0 0;
+  padding-left: 10px;
+  border-left: 3px solid #2e7d32;
+}
+
+.side-panel__explain {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.side-panel__explain summary {
+  cursor: pointer;
+  color: #6a1b9a;
+  font-weight: 600;
+}
+
+.side-panel__explain p {
+  margin: 8px 0 0;
+  opacity: 0.9;
+  line-height: 1.45;
+}
+
 /* ---- Redigeringsformulär ---- */
 .side-panel__edit {
   border: 1px solid #6a1b9a;
