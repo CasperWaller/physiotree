@@ -327,7 +327,8 @@ function App() {
       )}
       {quiz && content && selectedRegion && (
         <QuizMode
-          region={selectedRegion}
+          regions={content.regions}
+          currentRegionId={selectedRegion.region}
           tests={content.tests}
           diagnoses={content.diagnoses}
           onClose={() => setQuiz(false)}

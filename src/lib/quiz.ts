@@ -8,6 +8,7 @@ export interface QuizQuestion {
   id: string;
   prompt: string;
   sub?: string;
+  region?: string;
   options: QuizOption[];
   explanation: string;
 }
@@ -25,15 +26,16 @@ const isScreening = (t?: Test) =>
   !t || /screening|röda flaggor|fraktur/i.test(`${t.name} ${t.structure}`);
 
 /**
- * Bygger quizfrågor från en regions träd:
+ * Bygger quizfrågor från en eller flera regioners träd:
  *  A) Positivt test → vilken diagnos?
  *  B) Vilken struktur belastar testet?
+ * Distraktorer dras från hela pool­en.
  */
 export function buildQuiz(
-  region: Region,
+  regions: Region[],
   tests: Record<string, Test>,
   diagnoses: Record<string, Diagnosis>,
-  count = 8,
+  count = 10,
 ): QuizQuestion[] {
   const allDx = Object.values(diagnoses);
   const allStructures = [
@@ -45,51 +47,55 @@ export function buildQuiz(
   ];
 
   const questions: QuizQuestion[] = [];
-  const usedTypeA = new Set<string>();
-  const usedTypeB = new Set<string>();
+  const usedA = new Set<string>();
+  const usedB = new Set<string>();
 
-  // Typ A – diagnos från positivt test
-  for (const symptom of region.symptoms) {
-    for (const branch of symptom.tests) {
-      const dx = branch.positive?.diagnoses ?? [];
-      const test = tests[branch.test];
-      if (!test || dx.length === 0 || usedTypeA.has(branch.test)) continue;
-      usedTypeA.add(branch.test);
-      const correctId = dx[Math.floor(Math.random() * dx.length)];
-      const correct = diagnoses[correctId];
-      if (!correct) continue;
-      const distractors = shuffle(allDx.filter((d) => !dx.includes(d.id)))
-        .slice(0, 3)
-        .map((d) => ({ text: d.name, correct: false }));
-      if (distractors.length < 2) continue;
-      questions.push({
-        id: `A:${branch.test}`,
-        prompt: `«${test.name}» är positivt. Vilken diagnos talar det för?`,
-        sub: `Symtom: ${symptom.label}`,
-        options: shuffle([{ text: correct.name, correct: true }, ...distractors]),
-        explanation: `Ett positivt «${test.name}» talar för: ${dx
-          .map((id) => diagnoses[id]?.name ?? id)
-          .join(', ')}.`,
-      });
-    }
-  }
+  for (const region of regions) {
+    for (const symptom of region.symptoms) {
+      for (const branch of symptom.tests) {
+        const test = tests[branch.test];
+        if (!test) continue;
 
-  // Typ B – struktur som testet belastar
-  for (const symptom of region.symptoms) {
-    for (const branch of symptom.tests) {
-      const test = tests[branch.test];
-      if (!test || isScreening(test) || !test.structure || usedTypeB.has(branch.test)) continue;
-      usedTypeB.add(branch.test);
-      const distractors = shuffle(allStructures.filter((s) => s !== test.structure))
-        .slice(0, 3)
-        .map((s) => ({ text: s, correct: false }));
-      if (distractors.length < 2) continue;
-      questions.push({
-        id: `B:${branch.test}`,
-        prompt: `Vilken struktur belastar «${test.name}»?`,
-        options: shuffle([{ text: test.structure, correct: true }, ...distractors]),
-        explanation: `«${test.name}» belastar ${test.structure}.`,
-      });
+        // Typ A – diagnos från positivt test
+        const dx = branch.positive?.diagnoses ?? [];
+        if (dx.length > 0 && !usedA.has(branch.test)) {
+          usedA.add(branch.test);
+          const correctId = dx[Math.floor(Math.random() * dx.length)];
+          const correct = diagnoses[correctId];
+          const distractors = shuffle(allDx.filter((d) => !dx.includes(d.id)))
+            .slice(0, 3)
+            .map((d) => ({ text: d.name, correct: false }));
+          if (correct && distractors.length >= 2) {
+            questions.push({
+              id: `A:${branch.test}`,
+              prompt: `«${test.name}» är positivt. Vilken diagnos talar det för?`,
+              sub: `Symtom: ${symptom.label}`,
+              region: region.label,
+              options: shuffle([{ text: correct.name, correct: true }, ...distractors]),
+              explanation: `Ett positivt «${test.name}» talar för: ${dx
+                .map((id) => diagnoses[id]?.name ?? id)
+                .join(', ')}.`,
+            });
+          }
+        }
+
+        // Typ B – struktur som testet belastar
+        if (test.structure && !isScreening(test) && !usedB.has(branch.test)) {
+          usedB.add(branch.test);
+          const distractors = shuffle(allStructures.filter((s) => s !== test.structure))
+            .slice(0, 3)
+            .map((s) => ({ text: s, correct: false }));
+          if (distractors.length >= 2) {
+            questions.push({
+              id: `B:${branch.test}`,
+              prompt: `Vilken struktur belastar «${test.name}»?`,
+              region: region.label,
+              options: shuffle([{ text: test.structure, correct: true }, ...distractors]),
+              explanation: `«${test.name}» belastar ${test.structure}.`,
+            });
+          }
+        }
+      }
     }
   }
 

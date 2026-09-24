@@ -3,19 +3,29 @@ import type { Diagnosis, Region, Test } from '../lib/types';
 import { buildQuiz } from '../lib/quiz';
 
 interface Props {
-  region: Region;
+  regions: Region[];
+  currentRegionId: string;
   tests: Record<string, Test>;
   diagnoses: Record<string, Diagnosis>;
   onClose: () => void;
 }
 
-export function QuizMode({ region, tests, diagnoses, onClose }: Props) {
-  const [round, setRound] = useState(0); // bumpas vid omstart → nytt quiz
-  const questions = useMemo(
-    () => buildQuiz(region, tests, diagnoses),
+const COUNTS = [5, 10, 15, 0]; // 0 = alla
+
+export function QuizMode({ regions, currentRegionId, tests, diagnoses, onClose }: Props) {
+  const currentRegion = regions.find((r) => r.region === currentRegionId) ?? regions[0];
+
+  const [phase, setPhase] = useState<'setup' | 'quiz'>('setup');
+  const [count, setCount] = useState(10);
+  const [scopeAll, setScopeAll] = useState(false);
+  const [round, setRound] = useState(0);
+
+  const questions = useMemo(() => {
+    if (phase !== 'quiz') return [];
+    const scope = scopeAll ? regions : [currentRegion];
+    return buildQuiz(scope, tests, diagnoses, count === 0 ? 9999 : count);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [region, tests, diagnoses, round],
-  );
+  }, [phase, round, scopeAll, count]);
 
   const [index, setIndex] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -24,24 +34,24 @@ export function QuizMode({ region, tests, diagnoses, onClose }: Props) {
 
   const q = questions[index];
 
-  const restart = () => {
+  const start = () => {
+    setPhase('quiz');
     setRound((r) => r + 1);
     setIndex(0);
     setPicked(null);
     setScore(0);
     setDone(false);
   };
+  const backToSetup = () => setPhase('setup');
 
   const pick = (i: number) => {
     if (picked !== null) return;
     setPicked(i);
     if (q.options[i].correct) setScore((s) => s + 1);
   };
-
   const next = () => {
-    if (index + 1 >= questions.length) {
-      setDone(true);
-    } else {
+    if (index + 1 >= questions.length) setDone(true);
+    else {
       setIndex((i) => i + 1);
       setPicked(null);
     }
@@ -53,22 +63,73 @@ export function QuizMode({ region, tests, diagnoses, onClose }: Props) {
         <button type="button" className="guided__close" onClick={onClose} aria-label="Stäng">
           ×
         </button>
-        <span className="side-panel__tag quiz__tag">Quiz — {region.label}</span>
+        <span className="side-panel__tag quiz__tag">Quiz</span>
 
-        {questions.length === 0 && (
+        {/* -------- Inställningar -------- */}
+        {phase === 'setup' && (
           <>
-            <h2>Inga frågor</h2>
-            <p className="guided__structure">Den här regionen har ännu inte tillräckligt med data för ett quiz.</p>
+            <h2>Öva dig</h2>
+            <p className="quiz__sub">Flervalsfrågor som genereras från trädet.</p>
+
+            <h3>Antal frågor</h3>
+            <div className="quiz__pills">
+              {COUNTS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={count === c ? 'quiz__pill quiz__pill--active' : 'quiz__pill'}
+                  onClick={() => setCount(c)}
+                >
+                  {c === 0 ? 'Alla' : c}
+                </button>
+              ))}
+            </div>
+
+            <h3>Omfattning</h3>
+            <div className="quiz__pills">
+              <button
+                type="button"
+                className={!scopeAll ? 'quiz__pill quiz__pill--active' : 'quiz__pill'}
+                onClick={() => setScopeAll(false)}
+              >
+                {currentRegion?.label ?? 'Denna region'}
+              </button>
+              <button
+                type="button"
+                className={scopeAll ? 'quiz__pill quiz__pill--active' : 'quiz__pill'}
+                onClick={() => setScopeAll(true)}
+              >
+                Alla regioner
+              </button>
+            </div>
+
+            <div className="edit__actions" style={{ marginTop: 22 }}>
+              <button type="button" className="edit__save" onClick={start}>
+                Starta quiz
+              </button>
+            </div>
           </>
         )}
 
-        {questions.length > 0 && !done && q && (
+        {/* -------- Frågor -------- */}
+        {phase === 'quiz' && questions.length === 0 && (
+          <>
+            <h2>Inga frågor</h2>
+            <p className="guided__structure">Det finns inte tillräckligt med data för det här urvalet.</p>
+            <button type="button" className="guided__restart" onClick={backToSetup}>
+              ← Ändra inställningar
+            </button>
+          </>
+        )}
+
+        {phase === 'quiz' && !done && q && (
           <>
             <div className="quiz__progress" aria-hidden="true">
               <span style={{ width: `${(index / questions.length) * 100}%` }} />
             </div>
             <p className="guided__crumb">
               Fråga {index + 1} av {questions.length} · Poäng {score}
+              {scopeAll && q.region ? ` · ${q.region}` : ''}
             </p>
             {q.sub && <p className="quiz__sub">{q.sub}</p>}
             <h2>{q.prompt}</h2>
@@ -100,18 +161,18 @@ export function QuizMode({ region, tests, diagnoses, onClose }: Props) {
           </>
         )}
 
-        {done && (
+        {phase === 'quiz' && done && (
           <>
             <h2>Resultat</h2>
             <p className="quiz__result">
               {score} / {questions.length} rätt
             </p>
             <div className="edit__actions">
-              <button type="button" className="edit__save" onClick={restart}>
+              <button type="button" className="edit__save" onClick={start}>
                 ↺ Nytt quiz
               </button>
-              <button type="button" onClick={onClose}>
-                Stäng
+              <button type="button" onClick={backToSetup}>
+                Inställningar
               </button>
             </div>
           </>
