@@ -73,6 +73,7 @@ function Tree({
       fitView
       minZoom={0.1}
       nodesDraggable={false}
+      onlyRenderVisibleElements
       proOptions={{ hideAttribution: true }}
     >
       <Panel position="top-left">

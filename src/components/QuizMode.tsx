@@ -64,6 +64,9 @@ export function QuizMode({ region, tests, diagnoses, onClose }: Props) {
 
         {questions.length > 0 && !done && q && (
           <>
+            <div className="quiz__progress" aria-hidden="true">
+              <span style={{ width: `${(index / questions.length) * 100}%` }} />
+            </div>
             <p className="guided__crumb">
               Fråga {index + 1} av {questions.length} · Poäng {score}
             </p>
@@ -78,7 +81,8 @@ export function QuizMode({ region, tests, diagnoses, onClose }: Props) {
                 }
                 return (
                   <button key={i} type="button" className={cls} onClick={() => pick(i)} disabled={picked !== null}>
-                    {o.text}
+                    <span className="quiz__letter">{String.fromCharCode(65 + i)}</span>
+                    <span>{o.text}</span>
                   </button>
                 );
               })}

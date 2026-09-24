@@ -203,18 +203,17 @@
 .phys-node {
   --accent: var(--node-symptom);
   position: relative;
-  width: 232px;
+  width: 226px;
   box-sizing: border-box;
   padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
-  border-left: 3px solid var(--accent);
+  gap: 2px;
+  background: var(--accent);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  color: var(--ink);
+  box-shadow: var(--shadow-md);
+  color: #fff;
   transition:
     box-shadow 0.16s ease,
     transform 0.16s ease;
@@ -225,32 +224,30 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--accent);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .phys-node__label {
   font-size: 13.5px;
   line-height: 1.32;
   font-weight: 500;
-  color: var(--ink);
+  color: #fff;
 }
 
 .phys-node__hint {
   position: absolute;
   top: 9px;
-  right: 11px;
+  right: 12px;
   font-size: 14px;
-  color: var(--accent);
-  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .phys-node--clickable {
   cursor: pointer;
 }
 .phys-node--clickable:hover {
-  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
-  border-color: var(--accent);
+  filter: brightness(1.08);
 }
 
 /* React Flow chrome */
@@ -439,7 +436,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  background: color-mix(in srgb, var(--node-test) 14%, var(--surface));
+  background: rgba(58, 90, 134, 0.13);
   color: var(--node-test);
   padding: 3px 9px;
   border-radius: var(--radius-pill);
@@ -675,8 +672,7 @@
 .guided {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--ink) 55%, transparent);
-  backdrop-filter: blur(3px);
+  background: rgba(18, 15, 10, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -721,7 +717,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  background: color-mix(in srgb, var(--primary) 15%, var(--surface));
+  background: rgba(47, 133, 90, 0.14);
   color: var(--primary);
   padding: 3px 9px;
   border-radius: var(--radius-pill);
@@ -825,8 +821,22 @@
 
 /* ---------------- Quiz ---------------- */
 .quiz__tag {
-  background: color-mix(in srgb, var(--node-test) 15%, var(--surface));
+  background: rgba(58, 90, 134, 0.14);
   color: var(--node-test);
+}
+.quiz__progress {
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+  margin: 14px 0 4px;
+}
+.quiz__progress span {
+  display: block;
+  height: 100%;
+  background: var(--node-test);
+  border-radius: var(--radius-pill);
+  transition: width 0.3s ease;
 }
 .quiz__sub {
   font-size: 13px;
@@ -840,8 +850,11 @@
   margin-top: 8px;
 }
 .quiz__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-align: left;
-  padding: 13px 15px;
+  padding: 12px 14px;
   border-radius: var(--radius);
   border: 1px solid var(--line-strong);
   background: var(--surface);
@@ -853,6 +866,29 @@
     border-color 0.15s ease,
     background 0.15s ease;
 }
+.quiz__letter {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.quiz__option--correct .quiz__letter {
+  background: var(--node-symptom);
+  border-color: var(--node-symptom);
+  color: #fff;
+}
+.quiz__option--wrong .quiz__letter {
+  background: var(--node-positivt);
+  border-color: var(--node-positivt);
+  color: #fff;
+}
 .quiz__option:hover:not(:disabled) {
   border-color: var(--node-test);
   background: var(--surface-2);
@@ -862,12 +898,12 @@
 }
 .quiz__option--correct {
   border-color: var(--node-symptom);
-  background: color-mix(in srgb, var(--node-symptom) 15%, var(--surface));
+  background: rgba(47, 107, 78, 0.16);
   font-weight: 600;
 }
 .quiz__option--wrong {
   border-color: var(--node-positivt);
-  background: color-mix(in srgb, var(--node-positivt) 13%, var(--surface));
+  background: rgba(178, 58, 46, 0.14);
 }
 .quiz__fb {
   font-size: 14px;
@@ -941,7 +977,7 @@
   color: var(--ink-faint);
 }
 .te-del {
-  border: 1px solid color-mix(in srgb, var(--node-positivt) 55%, var(--line));
+  border: 1px solid rgba(178, 58, 46, 0.5);
   background: transparent;
   color: var(--node-positivt);
   border-radius: var(--radius-sm);
@@ -952,7 +988,7 @@
   flex: 0 0 auto;
 }
 .te-del:hover {
-  background: color-mix(in srgb, var(--node-positivt) 12%, var(--surface));
+  background: rgba(178, 58, 46, 0.1);
 }
 .te-add {
   margin-top: 12px;
@@ -967,7 +1003,7 @@
   cursor: pointer;
 }
 .te-add:hover {
-  background: color-mix(in srgb, var(--primary) 10%, var(--surface));
+  background: rgba(47, 133, 90, 0.1);
 }
 .te-add--symptom {
   display: block;
@@ -996,8 +1032,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: color-mix(in srgb, var(--node-test) 13%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--node-test) 35%, var(--line));
+  background: rgba(58, 90, 134, 0.13);
+  border: 1px solid rgba(58, 90, 134, 0.4);
   color: var(--ink);
   border-radius: var(--radius-pill);
   padding: 3px 5px 3px 11px;
@@ -1028,7 +1064,7 @@
 }
 .te-kind--active {
   border-color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+  background: rgba(47, 133, 90, 0.12);
   color: var(--primary);
   font-weight: 600;
 }

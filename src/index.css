@@ -66,12 +66,7 @@
     --primary-contrast: #10231a;
     --focus: #61b088;
 
-    --node-region: #cfc9bd;
-    --node-symptom: #5aa980;
-    --node-test: #7ea0d0;
-    --node-positivt: #e07a6d;
-    --node-negativt: #a29a8c;
-    --node-diagnos: #d9a441;
+    /* Nodfärgerna behålls mättade i mörkt läge (solid fyllning, vit text) */
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.4);
@@ -95,12 +90,6 @@
   --primary-soft: #61b088;
   --primary-contrast: #10231a;
   --focus: #61b088;
-  --node-region: #cfc9bd;
-  --node-symptom: #5aa980;
-  --node-test: #7ea0d0;
-  --node-positivt: #e07a6d;
-  --node-negativt: #a29a8c;
-  --node-diagnos: #d9a441;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 20px 55px rgba(0, 0, 0, 0.55);
@@ -140,7 +129,7 @@ button {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--primary) 26%, transparent);
+  background: rgba(47, 133, 90, 0.28);
 }
 
 :focus-visible {
