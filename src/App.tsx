@@ -54,6 +54,7 @@ function Tree({ content, onSelect }: { content: ContentData; onSelect: SelectFn 
       defaultEdges={edges}
       nodeTypes={nodeTypes}
       onNodeClick={handleNodeClick}
+      colorMode="system"
       fitView
       minZoom={0.1}
       nodesDraggable={false}
