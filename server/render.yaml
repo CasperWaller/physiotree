@@ -14,7 +14,8 @@ services:
     plan: free
     rootDir: server
     buildCommand: npm install && npm run build
-    startCommand: npx prisma db push && npm start
+    # db push (synkar schema) + seed om tom (skyddar admin-ändringar) + start
+    startCommand: npm run deploy:start
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL

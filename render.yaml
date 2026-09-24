@@ -1,0 +1,53 @@
+# Render.com blueprint: hela PhysioTree (frontend + API + Postgres).
+# render.com → "New +" → "Blueprint" → välj detta repo.
+# Sätt sedan hemligheterna som är markerade sync:false i dashboarden.
+databases:
+  - name: physiotree-db
+    databaseName: physiotree
+    user: physio
+    plan: free
+
+services:
+  # --- Backend: Express-API ---
+  - type: web
+    name: physiotree-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install && npm run build
+    # db push (synkar schema) + seed om tom (skyddar admin-ändringar) + start
+    startCommand: npm run deploy:start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: physiotree-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: "4000"
+      # Sätt till frontendens URL efter första deployen (t.ex.
+      # https://physiotree-web.onrender.com) så CORS släpper igenom den.
+      - key: CORS_ORIGIN
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+
+  # --- Frontend: statisk Vite-app ---
+  - type: web
+    name: physiotree-web
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # Sätt till API:ts URL efter första deployen (t.ex.
+      # https://physiotree-api.onrender.com). Byggs in i appen.
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
