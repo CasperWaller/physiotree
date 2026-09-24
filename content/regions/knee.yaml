@@ -1,0 +1,103 @@
+region: knee
+label: Knä
+symptoms:
+  - id: vridvald-instabilitet
+    label: Vridvåld med givewaykänsla / instabilitet
+    tests:
+      - test: lachman
+        positive:
+          finding: Ökad främre translation med mjukt stopp
+          diagnoses: [acl-ruptur]
+        negative:
+          next_tests: [anterior-drawer-kna, lateral-pivot-shift]
+      - test: anterior-drawer-kna
+        positive:
+          finding: Ökad främre translation
+          diagnoses: [acl-ruptur]
+        negative:
+          next_tests: [lateral-pivot-shift]
+      - test: lateral-pivot-shift
+        positive:
+          finding: Subluxation–reposition vid flexion
+          diagnoses: [acl-ruptur]
+        negative:
+          next_tests: [ottawa-knee-rules]
+
+  - id: bakre-instabilitet
+    label: Direkt våld mot främre tibia / bakre instabilitet
+    tests:
+      - test: posterior-drawer
+        positive:
+          finding: Ökad bakre translation
+          diagnoses: [pcl-ruptur]
+        negative:
+          next_tests: [ottawa-knee-rules]
+
+  - id: ledspringesmarta-lasningar
+    label: Ledspringesmärta / låsningar / vridvåld
+    tests:
+      - test: joint-line-tenderness
+        positive:
+          finding: Ömhet över ledspringan
+          diagnoses: [meniskskada]
+        negative:
+          next_tests: [mcmurray, thessaly, apleys-test]
+      - test: mcmurray
+        positive:
+          finding: Smärta/klick längs ledspringan
+          diagnoses: [meniskskada]
+        negative:
+          next_tests: [thessaly, apleys-test]
+      - test: thessaly
+        positive:
+          finding: Ledspringesmärta eller låsningskänsla
+          diagnoses: [meniskskada]
+        negative:
+          next_tests: [apleys-test]
+      - test: apleys-test
+        positive:
+          finding: Smärta vid kompression + rotation
+          diagnoses: [meniskskada]
+        negative:
+          next_tests: [ottawa-knee-rules]
+
+  - id: valgusvald-medial
+    label: Valgusvåld / medial smärta
+    tests:
+      - test: valgus-stress-test
+        positive:
+          finding: Smärta och/eller medial gapning
+          diagnoses: [mcl-skada]
+        negative:
+          next_tests: [ottawa-knee-rules]
+
+  - id: varusvald-lateral
+    label: Varusvåld / lateral smärta
+    tests:
+      - test: varus-stress-test
+        positive:
+          finding: Lateral gapning och/eller smärta
+          diagnoses: [lcl-skada]
+        negative:
+          next_tests: [ottawa-knee-rules]
+
+  - id: patella-instabilitet
+    label: Patella hoppar ur led / patellär instabilitet
+    tests:
+      - test: patellar-apprehension-test
+        positive:
+          finding: Apprehension vid lateral förskjutning av patella
+          diagnoses: [patellinstabilitet]
+        negative:
+          next_tests: [ottawa-knee-rules]
+
+  - id: screening-kna
+    label: Screening (ingår alltid)
+    tests:
+      - test: ottawa-knee-rules
+        positive:
+          finding: Kriterium uppfyllt – röntga för att utesluta fraktur
+          diagnoses: []
+          next_tests: []
+        negative:
+          next_tests: []

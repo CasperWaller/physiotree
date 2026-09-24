@@ -1,7 +1,7 @@
 import { runSeed } from './seedLib.js';
 
-// Full seed (manuell). Kör: npm run seed
-runSeed(false)
+// Full seed (skriver över från content/). Kör: npm run seed
+runSeed(true)
   .then(() => process.exit(0))
   .catch((e) => {
     console.error(e);

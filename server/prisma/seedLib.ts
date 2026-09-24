@@ -44,7 +44,7 @@ function readMd(dir: string) {
     .map((f) => parseFrontmatter(readFileSync(join(full, f), 'utf8')));
 }
 
-async function seedTests(prisma: PrismaClient) {
+async function seedTests(prisma: PrismaClient, overwrite: boolean) {
   let n = 0;
   for (const { data, body } of readMd('tests')) {
     const id = String(data.id);
@@ -61,13 +61,18 @@ async function seedTests(prisma: PrismaClient) {
       video: String(data.video ?? ''),
       body,
     };
-    await prisma.test.upsert({ where: { id }, create: { id, ...payload }, update: payload });
+    // additivt (overwrite=false): rör inte befintliga rader (skyddar admin-ändringar)
+    await prisma.test.upsert({
+      where: { id },
+      create: { id, ...payload },
+      update: overwrite ? payload : {},
+    });
     n++;
   }
   return n;
 }
 
-async function seedDiagnoses(prisma: PrismaClient) {
+async function seedDiagnoses(prisma: PrismaClient, overwrite: boolean) {
   let n = 0;
   for (const { data, body } of readMd('diagnoses')) {
     const id = String(data.id);
@@ -78,13 +83,17 @@ async function seedDiagnoses(prisma: PrismaClient) {
       relatedTests: (data.related_tests as string[]) ?? [],
       body,
     };
-    await prisma.diagnosis.upsert({ where: { id }, create: { id, ...payload }, update: payload });
+    await prisma.diagnosis.upsert({
+      where: { id },
+      create: { id, ...payload },
+      update: overwrite ? payload : {},
+    });
     n++;
   }
   return n;
 }
 
-async function seedRegions(prisma: PrismaClient) {
+async function seedRegions(prisma: PrismaClient, overwrite: boolean) {
   let n = 0;
   const full = join(contentDir, 'regions');
   for (const f of readdirSync(full).filter((x) => x.endsWith('.yaml'))) {
@@ -97,7 +106,7 @@ async function seedRegions(prisma: PrismaClient) {
     await prisma.region.upsert({
       where: { region: doc.region },
       create: { region: doc.region, ...payload },
-      update: payload,
+      update: overwrite ? payload : {},
     });
     n++;
   }
@@ -122,23 +131,21 @@ async function seedAdmin(prisma: PrismaClient) {
 
 /**
  * Seedar databasen från content/.
- * onlyIfEmpty=true hoppar över allt om det redan finns tester (skyddar admin-ändringar).
+ * overwrite=true  → skriv över befintliga rader (manuell dev-seed).
+ * overwrite=false → additivt: skapa bara nya id:n, rör aldrig befintliga
+ *                   (används vid deploy så nya regioner läggs till utan att
+ *                   admin-ändringar skrivs över).
  */
-export async function runSeed(onlyIfEmpty = false): Promise<void> {
+export async function runSeed(overwrite = true): Promise<void> {
   const prisma = new PrismaClient();
   try {
-    if (onlyIfEmpty) {
-      const existing = await prisma.test.count();
-      if (existing > 0) {
-        console.log(`✓ Databasen har redan ${existing} tester – hoppar över seed.`);
-        return;
-      }
-    }
-    const t = await seedTests(prisma);
-    const d = await seedDiagnoses(prisma);
-    const r = await seedRegions(prisma);
+    const t = await seedTests(prisma, overwrite);
+    const d = await seedDiagnoses(prisma, overwrite);
+    const r = await seedRegions(prisma, overwrite);
     await seedAdmin(prisma);
-    console.log(`✓ Seedade ${t} tester, ${d} diagnoser, ${r} regioner.`);
+    console.log(
+      `✓ Seedade ${t} tester, ${d} diagnoser, ${r} regioner (${overwrite ? 'overwrite' : 'additivt'}).`,
+    );
   } finally {
     await prisma.$disconnect();
   }
