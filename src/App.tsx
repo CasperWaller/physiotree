@@ -19,7 +19,7 @@ import { SidePanel } from './components/SidePanel';
 import { SearchBox } from './components/SearchBox';
 import { GuidedMode } from './components/GuidedMode';
 import { LoginModal } from './components/LoginModal';
-import type { Diagnosis, NodeKind, Test } from './lib/types';
+import type { Diagnosis, NodeKind, Region, Test } from './lib/types';
 import './App.css';
 
 const MINIMAP_COLORS: Record<NodeKind, string> = {
@@ -33,12 +33,22 @@ const MINIMAP_COLORS: Record<NodeKind, string> = {
 
 type SelectFn = (kind: NodeKind, refId?: string) => void;
 
-function Tree({ content, onSelect }: { content: ContentData; onSelect: SelectFn }) {
+function Tree({
+  region,
+  tests,
+  diagnoses,
+  onSelect,
+}: {
+  region: Region;
+  tests: Record<string, Test>;
+  diagnoses: Record<string, Diagnosis>;
+  onSelect: SelectFn;
+}) {
   const { nodes, edges } = useMemo(() => {
-    const graph = buildGraph(content.region, content.tests, content.diagnoses);
+    const graph = buildGraph(region, tests, diagnoses);
     const typedNodes = graph.nodes.map((n) => ({ ...n, type: 'phys' }));
     return layoutTree(typedNodes, graph.edges, 'LR');
-  }, [content]);
+  }, [region, tests, diagnoses]);
 
   const handleNodeClick = useCallback(
     (_: unknown, node: Node) => {
@@ -61,12 +71,7 @@ function Tree({ content, onSelect }: { content: ContentData; onSelect: SelectFn 
       proOptions={{ hideAttribution: true }}
     >
       <Panel position="top-left">
-        <SearchBox
-          region={content.region}
-          tests={content.tests}
-          diagnoses={content.diagnoses}
-          onSelect={onSelect}
-        />
+        <SearchBox region={region} tests={tests} diagnoses={diagnoses} onSelect={onSelect} />
       </Panel>
       <Background />
       <Controls />
@@ -84,12 +89,16 @@ function App() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [rev, setRev] = useState(0); // bumpas vid redigering → tvingar om-layout
 
+  const [regionId, setRegionId] = useState<string | undefined>();
   const [selectedTest, setSelectedTest] = useState<string | undefined>();
   const [selectedDiagnosis, setSelectedDiagnosis] = useState<string | undefined>();
   const [guided, setGuided] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
   const { token, user, isAdmin, login, logout } = useAuth();
+
+  const selectedRegion =
+    content?.regions.find((r) => r.region === regionId) ?? content?.regions[0];
 
   const load = useCallback(() => {
     setLoadError(null);
@@ -111,6 +120,12 @@ function App() {
   }, []);
 
   const closePanel = useCallback(() => {
+    setSelectedTest(undefined);
+    setSelectedDiagnosis(undefined);
+  }, []);
+
+  const switchRegion = useCallback((id: string) => {
+    setRegionId(id);
     setSelectedTest(undefined);
     setSelectedDiagnosis(undefined);
   }, []);
@@ -140,9 +155,23 @@ function App() {
       <header className="app-header">
         <div className="app-header__titles">
           <h1>PhysioTree 🦴</h1>
-          <p>Fysioterapeutisk bedömning{content ? ` — ${content.region.label}` : ''}</p>
+          <p>Fysioterapeutisk bedömning</p>
         </div>
         <div className="app-header__actions">
+          {content && selectedRegion && (
+            <select
+              className="app-header__region"
+              value={selectedRegion.region}
+              onChange={(e) => switchRegion(e.target.value)}
+              aria-label="Välj region"
+            >
+              {content.regions.map((r) => (
+                <option key={r.region} value={r.region}>
+                  {r.label}
+                </option>
+              ))}
+            </select>
+          )}
           {content && (
             <button type="button" className="app-header__guided" onClick={() => setGuided(true)}>
               ▶ Guidat läge
@@ -169,10 +198,15 @@ function App() {
           </div>
         )}
         {!loadError && !content && <div className="app-status">Laddar innehåll…</div>}
-        {content && (
+        {content && selectedRegion && (
           <main className="app-canvas">
-            <ReactFlowProvider key={rev}>
-              <Tree content={content} onSelect={handleSelect} />
+            <ReactFlowProvider key={`${selectedRegion.region}:${rev}`}>
+              <Tree
+                region={selectedRegion}
+                tests={content.tests}
+                diagnoses={content.diagnoses}
+                onSelect={handleSelect}
+              />
             </ReactFlowProvider>
           </main>
         )}
@@ -189,9 +223,9 @@ function App() {
         )}
       </div>
 
-      {guided && content && (
+      {guided && content && selectedRegion && (
         <GuidedMode
-          region={content.region}
+          region={selectedRegion}
           tests={content.tests}
           diagnoses={content.diagnoses}
           onClose={() => setGuided(false)}

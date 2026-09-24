@@ -8,7 +8,7 @@ export interface AuthUser {
 }
 
 export interface ContentData {
-  region: Region;
+  regions: Region[];
   tests: Record<string, Test>;
   diagnoses: Record<string, Diagnosis>;
 }
@@ -89,9 +89,11 @@ export async function fetchContent(): Promise<ContentData> {
   for (const t of data.tests) tests[t.id] = toTest(t);
   const diagnoses: Record<string, Diagnosis> = {};
   for (const d of data.diagnoses) diagnoses[d.id] = toDiagnosis(d);
-  const region = { ...data.regions[0] } as Region;
+  const regions = data.regions
+    .map((r) => ({ ...r }) as Region)
+    .sort((a, b) => a.label.localeCompare(b.label, 'sv'));
 
-  return { region, tests, diagnoses };
+  return { regions, tests, diagnoses };
 }
 
 export async function login(email: string, password: string) {

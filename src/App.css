@@ -35,6 +35,17 @@
   flex: 0 0 auto;
 }
 
+.app-header__region {
+  font: inherit;
+  font-size: 14px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid #45607a;
+  background: #12263a;
+  color: #fff;
+  cursor: pointer;
+}
+
 .app-header__guided {
   border: 1px solid #2e7d32;
   background: #2e7d32;
