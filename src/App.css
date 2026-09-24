@@ -181,22 +181,22 @@
 }
 
 /* ---------------- Noder ---------------- */
-.phys-node--region {
+.phys-node.phys-node--region {
   --accent: var(--node-region);
 }
-.phys-node--symptom {
+.phys-node.phys-node--symptom {
   --accent: var(--node-symptom);
 }
-.phys-node--test {
+.phys-node.phys-node--test {
   --accent: var(--node-test);
 }
-.phys-node--positivt {
+.phys-node.phys-node--positivt {
   --accent: var(--node-positivt);
 }
-.phys-node--negativt {
+.phys-node.phys-node--negativt {
   --accent: var(--node-negativt);
 }
-.phys-node--diagnos {
+.phys-node.phys-node--diagnos {
   --accent: var(--node-diagnos);
 }
 
