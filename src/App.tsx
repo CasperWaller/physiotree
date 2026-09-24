@@ -32,17 +32,9 @@ import { LoginModal } from './components/LoginModal';
 import { Legend } from './components/Legend';
 import { TreeEditor } from './components/TreeEditor';
 import { NewItemModal } from './components/NewItemModal';
+import { NODE_ACCENT } from './lib/theme';
 import type { Diagnosis, NodeKind, Region, Test } from './lib/types';
 import './App.css';
-
-const MINIMAP_COLORS: Record<NodeKind, string> = {
-  region: '#1f4e79',
-  symptom: '#2e7d32',
-  test: '#6a1b9a',
-  positivt: '#c62828',
-  negativt: '#455a64',
-  diagnos: '#ef6c00',
-};
 
 type SelectFn = (kind: NodeKind, refId?: string) => void;
 
@@ -94,7 +86,7 @@ function Tree({
       <MiniMap
         pannable
         zoomable
-        nodeColor={(n) => MINIMAP_COLORS[(n.data as PhysNodeData).kind] ?? '#333'}
+        nodeColor={(n) => NODE_ACCENT[(n.data as PhysNodeData).kind] ?? '#333'}
       />
     </ReactFlow>
   );

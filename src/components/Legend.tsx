@@ -1,14 +1,8 @@
 import { useState } from 'react';
 import type { NodeKind } from '../lib/types';
+import { NODE_ACCENT, NODE_LABEL } from '../lib/theme';
 
-const ITEMS: { kind: NodeKind; label: string; color: string }[] = [
-  { kind: 'region', label: 'Region', color: '#1f4e79' },
-  { kind: 'symptom', label: 'Symtom', color: '#2e7d32' },
-  { kind: 'test', label: 'Test', color: '#6a1b9a' },
-  { kind: 'positivt', label: 'Positivt fynd', color: '#c62828' },
-  { kind: 'negativt', label: 'Negativt fynd', color: '#455a64' },
-  { kind: 'diagnos', label: 'Diagnos', color: '#ef6c00' },
-];
+const ORDER: NodeKind[] = ['region', 'symptom', 'test', 'positivt', 'negativt', 'diagnos'];
 
 export function Legend() {
   const [open, setOpen] = useState(true);
@@ -21,14 +15,14 @@ export function Legend() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
       >
-        Teckenförklaring {open ? '▾' : '▸'}
+        Teckenförklaring <span className="legend__chev">{open ? '–' : '+'}</span>
       </button>
       {open && (
         <ul className="legend__list">
-          {ITEMS.map((i) => (
-            <li key={i.kind}>
-              <span className="legend__swatch" style={{ background: i.color }} />
-              {i.label}
+          {ORDER.map((kind) => (
+            <li key={kind}>
+              <span className="legend__swatch" style={{ background: NODE_ACCENT[kind] }} />
+              {NODE_LABEL[kind]}
             </li>
           ))}
           <li className="legend__hint">Klicka på Test eller Diagnos för detaljer</li>
