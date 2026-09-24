@@ -124,7 +124,8 @@ async function seedAdmin(prisma: PrismaClient) {
   await prisma.user.upsert({
     where: { email },
     create: { email, passwordHash, role: 'admin' },
-    update: {}, // ändra inte befintligt lösenord vid ny-seed
+    // ADMIN_PASSWORD är källan: synka lösenord/roll från env vid varje deploy
+    update: { passwordHash, role: 'admin' },
   });
   console.log(`✓ Admin-användare: ${email}`);
 }
