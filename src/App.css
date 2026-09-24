@@ -61,6 +61,92 @@
   background: #388e3c;
 }
 
+.app-header__quiz {
+  border: 1px solid #1f6f8b;
+  background: #1f6f8b;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.app-header__quiz:hover {
+  background: #268aab;
+}
+
+/* ---- Quiz ---- */
+.quiz__tag {
+  background: #1f6f8b;
+}
+
+.quiz__sub {
+  font-size: 13px;
+  opacity: 0.75;
+  margin: 8px 0 0;
+}
+
+.quiz__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.quiz__option {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 9px;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  background: transparent;
+  color: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.quiz__option:hover:not(:disabled) {
+  border-color: #1f6f8b;
+  background: rgba(31, 111, 139, 0.1);
+}
+
+.quiz__option:disabled {
+  cursor: default;
+}
+
+.quiz__option--correct {
+  border-color: #2e7d32;
+  background: rgba(46, 125, 50, 0.18);
+  font-weight: 600;
+}
+
+.quiz__option--wrong {
+  border-color: #c62828;
+  background: rgba(198, 40, 40, 0.15);
+}
+
+.quiz__fb {
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 12px 0;
+  padding-left: 10px;
+  border-left: 3px solid #1f6f8b;
+}
+
+.quiz__fb--ok {
+  border-left-color: #2e7d32;
+}
+
+.quiz__fb--no {
+  border-left-color: #c62828;
+}
+
+.quiz__result {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0 16px;
+}
+
 .app-header__login {
   border: 1px solid #45607a;
   background: transparent;

@@ -27,6 +27,7 @@ import { nodeTypes } from './components/PhysNode';
 import { SidePanel } from './components/SidePanel';
 import { SearchBox } from './components/SearchBox';
 import { GuidedMode } from './components/GuidedMode';
+import { QuizMode } from './components/QuizMode';
 import { LoginModal } from './components/LoginModal';
 import { Legend } from './components/Legend';
 import { TreeEditor } from './components/TreeEditor';
@@ -109,6 +110,7 @@ function App() {
   const [selectedTest, setSelectedTest] = useState<string | undefined>();
   const [selectedDiagnosis, setSelectedDiagnosis] = useState<string | undefined>();
   const [guided, setGuided] = useState(false);
+  const [quiz, setQuiz] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [treeOpen, setTreeOpen] = useState(false);
   const [newOpen, setNewOpen] = useState(false);
@@ -251,6 +253,11 @@ function App() {
               ▶ Guidat läge
             </button>
           )}
+          {content && (
+            <button type="button" className="app-header__quiz" onClick={() => setQuiz(true)}>
+              ✎ Quiz
+            </button>
+          )}
           {isAdmin && content && selectedRegion && (
             <>
               <button type="button" className="app-header__admin" onClick={() => setTreeOpen(true)}>
@@ -323,6 +330,14 @@ function App() {
           diagnoses={content.diagnoses}
           onClose={() => setGuided(false)}
           onSelect={handleSelect}
+        />
+      )}
+      {quiz && content && selectedRegion && (
+        <QuizMode
+          region={selectedRegion}
+          tests={content.tests}
+          diagnoses={content.diagnoses}
+          onClose={() => setQuiz(false)}
         />
       )}
       {loginOpen && <LoginModal onClose={() => setLoginOpen(false)} onLogin={login} />}
