@@ -1222,6 +1222,15 @@
     padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   }
 
+  /* Lättare kompositering vid zoom på mobil */
+  .phys-node {
+    box-shadow: none;
+  }
+  .phys-node--clickable:hover {
+    transform: none;
+    filter: none;
+  }
+
   /* Större träffytor i guidat läge / quiz */
   .guided__choices button,
   .quiz__option {

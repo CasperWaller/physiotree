@@ -91,6 +91,7 @@ function Tree({
       colorMode="system"
       fitView
       minZoom={0.1}
+      maxZoom={isMobile ? 1.4 : 2}
       nodesDraggable={false}
       onlyRenderVisibleElements
       proOptions={{ hideAttribution: true }}
@@ -101,7 +102,7 @@ function Tree({
       <Panel position="top-right">
         <Legend />
       </Panel>
-      <Background />
+      {!isMobile && <Background />}
       <Controls showInteractive={false} />
       {!isMobile && (
         <MiniMap
