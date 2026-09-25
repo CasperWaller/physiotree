@@ -1147,23 +1147,104 @@
 /* ---------------- Mobil ---------------- */
 @media (max-width: 720px) {
   .app-header {
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
   .app-header p {
     display: none;
   }
+
+  /* Actions blir en horisontellt scrollbar remsa i stället för att radbrytas */
+  .app-header__actions {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 0 calc(-1 * clamp(14px, 3vw, 28px));
+    padding: 2px clamp(14px, 3vw, 28px);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .app-header__actions::-webkit-scrollbar {
+    display: none;
+  }
+  .app-header__region,
+  .app-header__guided,
+  .app-header__quiz,
+  .app-header__admin,
+  .app-header__login,
+  .app-header__user button {
+    flex: 0 0 auto;
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+  .app-header__user {
+    flex: 0 0 auto;
+  }
+  .app-header__email {
+    display: none;
+  }
+
+  /* Sidopanel som helskärm */
   .side-panel {
     position: absolute;
     inset: 0;
     flex: none;
     max-width: 100%;
     z-index: 20;
+    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
   }
+
   .search-box {
-    width: 200px;
+    width: min(62vw, 260px);
+  }
+
+  /* Minikartan tar för mycket plats på liten skärm */
+  .react-flow__minimap {
+    display: none;
+  }
+
+  /* Modaler som bottensheets */
+  .guided {
+    align-items: flex-end;
+    padding: 0;
   }
   .guided__box {
-    padding: 22px 18px 20px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 22px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+    animation: sheet-up 0.22s ease;
+  }
+  .login,
+  .tree-editor {
+    width: 100%;
+  }
+  .te-actions {
+    bottom: 0;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Större träffytor i guidat läge / quiz */
+  .guided__choices button,
+  .quiz__option {
+    padding: 14px 15px;
+  }
+  .quiz__next,
+  .quiz__ghost {
+    padding: 13px 20px;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(14px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

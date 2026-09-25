@@ -5,7 +5,14 @@ import { NODE_ACCENT, NODE_LABEL } from '../lib/theme';
 const ORDER: NodeKind[] = ['region', 'symptom', 'test', 'positivt', 'negativt', 'diagnos'];
 
 export function Legend() {
-  const [open, setOpen] = useState(true);
+  // Fälld som standard på mobil (tar annars plats över trädet)
+  const [open, setOpen] = useState(() => {
+    try {
+      return !window.matchMedia('(max-width: 720px)').matches;
+    } catch {
+      return true;
+    }
+  });
 
   return (
     <div className="legend">

@@ -263,7 +263,7 @@ function App() {
           )}
           {isAdmin ? (
             <span className="app-header__user">
-              {user?.email}
+              <span className="app-header__email">{user?.email}</span>
               <button type="button" onClick={logout}>Logga ut</button>
             </span>
           ) : (
