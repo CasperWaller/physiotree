@@ -824,6 +824,52 @@
   background: rgba(58, 90, 134, 0.14);
   color: var(--node-test);
 }
+.quiz__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.quiz__next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--node-test);
+  color: #fff;
+  cursor: pointer;
+  margin-top: 6px;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+}
+.quiz__next:hover {
+  filter: brightness(1.08);
+}
+.quiz__next:active {
+  transform: translateY(1px);
+}
+.quiz__ghost {
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 11px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.quiz__ghost:hover {
+  border-color: var(--ink-soft);
+  background: var(--surface-2);
+}
+
 .quiz__pills {
   display: flex;
   flex-wrap: wrap;

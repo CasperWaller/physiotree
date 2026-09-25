@@ -103,9 +103,9 @@ export function QuizMode({ regions, currentRegionId, tests, diagnoses, onClose }
               </button>
             </div>
 
-            <div className="edit__actions" style={{ marginTop: 22 }}>
-              <button type="button" className="edit__save" onClick={start}>
-                Starta quiz
+            <div className="quiz__actions">
+              <button type="button" className="quiz__next" onClick={start}>
+                Starta quiz →
               </button>
             </div>
           </>
@@ -153,8 +153,8 @@ export function QuizMode({ regions, currentRegionId, tests, diagnoses, onClose }
                 <p className={q.options[picked].correct ? 'quiz__fb quiz__fb--ok' : 'quiz__fb quiz__fb--no'}>
                   {q.options[picked].correct ? 'Rätt!' : 'Fel.'} {q.explanation}
                 </p>
-                <button type="button" className="edit__save" onClick={next}>
-                  {index + 1 >= questions.length ? 'Se resultat' : 'Nästa fråga'}
+                <button type="button" className="quiz__next" onClick={next}>
+                  {index + 1 >= questions.length ? 'Se resultat →' : 'Nästa fråga →'}
                 </button>
               </>
             )}
@@ -167,11 +167,11 @@ export function QuizMode({ regions, currentRegionId, tests, diagnoses, onClose }
             <p className="quiz__result">
               {score} / {questions.length} rätt
             </p>
-            <div className="edit__actions">
-              <button type="button" className="edit__save" onClick={start}>
+            <div className="quiz__actions">
+              <button type="button" className="quiz__next" onClick={start}>
                 ↺ Nytt quiz
               </button>
-              <button type="button" onClick={backToSetup}>
+              <button type="button" className="quiz__ghost" onClick={backToSetup}>
                 Inställningar
               </button>
             </div>
