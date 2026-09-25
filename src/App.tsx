@@ -38,6 +38,24 @@ import './App.css';
 
 type SelectFn = (kind: NodeKind, refId?: string) => void;
 
+/** true på små skärmar (mobil) */
+function useIsMobile(): boolean {
+  const [mobile, setMobile] = useState(() => {
+    try {
+      return window.matchMedia('(max-width: 720px)').matches;
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 720px)');
+    const onChange = () => setMobile(mq.matches);
+    mq.addEventListener?.('change', onChange);
+    return () => mq.removeEventListener?.('change', onChange);
+  }, []);
+  return mobile;
+}
+
 function Tree({
   region,
   tests,
@@ -49,6 +67,7 @@ function Tree({
   diagnoses: Record<string, Diagnosis>;
   onSelect: SelectFn;
 }) {
+  const isMobile = useIsMobile();
   const { nodes, edges } = useMemo(() => {
     const graph = buildGraph(region, tests, diagnoses);
     const typedNodes = graph.nodes.map((n) => ({ ...n, type: 'phys' }));
@@ -83,12 +102,14 @@ function Tree({
         <Legend />
       </Panel>
       <Background />
-      <Controls />
-      <MiniMap
-        pannable
-        zoomable
-        nodeColor={(n) => NODE_ACCENT[(n.data as PhysNodeData).kind] ?? '#333'}
-      />
+      <Controls showInteractive={false} />
+      {!isMobile && (
+        <MiniMap
+          pannable
+          zoomable
+          nodeColor={(n) => NODE_ACCENT[(n.data as PhysNodeData).kind] ?? '#333'}
+        />
+      )}
     </ReactFlow>
   );
 }

@@ -212,7 +212,7 @@
   background: var(--accent);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   color: #fff;
   transition:
     box-shadow 0.16s ease,
@@ -1198,11 +1198,6 @@
 
   .search-box {
     width: min(62vw, 260px);
-  }
-
-  /* Minikartan tar för mycket plats på liten skärm */
-  .react-flow__minimap {
-    display: none;
   }
 
   /* Modaler som bottensheets */
