@@ -90,7 +90,8 @@ function Tree({
       onNodeClick={handleNodeClick}
       colorMode="system"
       fitView
-      minZoom={0.1}
+      fitViewOptions={{ minZoom: isMobile ? 0.5 : 0.1, maxZoom: isMobile ? 0.9 : 2 }}
+      minZoom={isMobile ? 0.5 : 0.1}
       maxZoom={isMobile ? 1.4 : 2}
       nodesDraggable={false}
       onlyRenderVisibleElements
